@@ -10,5 +10,3 @@ def login(request):
 def signUp(request):
     return render(request, 'signup.html')
 
-def dashboard(request):
-    return render(request, "demo.html")
