@@ -27,4 +27,10 @@ urlpatterns = [
     path('signup', views.signUp, name='signup'),
     
     path('Tournua/', include('tournua.urls')),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+# Serve static files
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Serve media files (uploads)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

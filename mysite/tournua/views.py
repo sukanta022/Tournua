@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import UserAccount
+from .models import UserAccount, Tournament, Team
 from .forms import SignupForm
 from django.views.decorators.cache import never_cache
 
@@ -57,6 +57,45 @@ def logout_view(request):
     request.session.flush()  # This removes all session data
     return redirect("home")
 
+
+
+def create_tournament(request):
+    if request.method == "POST":
+        name = request.POST.get("tournament_name")
+        description = request.POST.get("tournament_descriptions")
+        trophy = request.FILES.get("trophy")  # you’ll need to update HTML to allow trophy upload
+        t_type = request.POST.get("select_type")
+        player_type = request.POST.get("player_type")
+        format_choice = request.POST.get("format")
+        groups = request.POST.get("select_group")
+        teams_per_group = request.POST.get("team_num")
+
+        # Save tournament
+        tournament = Tournament.objects.create(
+            name=name,
+            description=description,
+            trophy=trophy,
+            tournament_type=t_type,
+            player_type=player_type,
+            format=format_choice,
+            num_groups=groups,
+            teams_per_group=teams_per_group,
+        )
+
+        # Save teams
+        for i in range(1, 9):  # 8 teams
+            team_name = request.POST.get(f"team{i}")
+            team_logo = request.FILES.get(f"team{i}_logo")
+            if team_name:  # only save if team entered
+                Team.objects.create(
+                    tournament=tournament,
+                    name=team_name,
+                    logo=team_logo
+                )
+
+        return redirect("dashboard")  # redirect after success
+
+    return render(request, "tournament_form.html")
 
 
 

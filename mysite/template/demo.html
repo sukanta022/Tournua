@@ -71,7 +71,9 @@
                     
 
                     <div class="flex flex-col lg:flex-row gap-6 lg:gap-14 mb-20">
-                        <a class="btn bg-[#000000] text-white rounded-3xl px-6 border-[#13898B] border-2">Create A New Tournament</a>
+                        <button class="btn bg-[#000000] text-white rounded-3xl px-6 border-[#13898B] border-2">
+                            <label for="verify_modal" class="text-[#00bfa5] cursor-pointer">Create A New Tournament</label>
+                        </button>
                         <a class="btn bg-[#000000] text-white rounded-3xl px-6 border">Follow A Public Tournament</a>
                     </div>
                 </div>
@@ -93,8 +95,7 @@
                 rounded-xl border-2 border-white/30 
                 bg-white/4 backdrop-blur-md shadow-xl p-20 lg:p-0">
                     <button class="btn border-2 border-[#13898B] text-white rounded-full w-14 h-14 bg-white/5">
-                       <p class="text-2xl text-gray-400"><i class="bi bi-plus-lg"></i></p>
-                       
+                       <p class="text-2xl text-gray-400"><i class="bi bi-plus-lg"></i></p> 
                     </button>
                     <p class="text-2xl text-white">Add your Tournament</p> 
                 </div>
@@ -189,6 +190,231 @@
         </div>
 
     </footer>
+    <input type="checkbox" id="verify_modal" class="modal-toggle" />
+<div class="modal backdrop-blur-sm" role="dialog">
+  <div class="modal-box max-w-4xl w-11/12 bg-white/5 text-white rounded-2xl border border-white/20 shadow-2xl relative p-8">
+
+    <!-- Close Button -->
+    <label for="verify_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <!-- Modal Title -->
+    <h2 class="text-2xl font-bold mb-6 text-center">Create Tournament</h2>
+
+    <!-- Form -->
+    <form action="{% url 'create_tournament' %}" method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+
+      <!-- Page 1 -->
+      <div id="page1" class="space-y-4">
+        <div>
+          <label for="tournament_name" class="block text-sm font-medium mb-2">Tournament Name</label>
+          <input id="tournament_name" name="tournament_name" type="text"
+            placeholder="Type tournament name..."
+            class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+        </div>
+
+        <div>
+          <label for="tournament_descriptions" class="block text-sm font-medium mb-2">Tournament Moto</label>
+          <textarea id="tournament_descriptions" name="tournament_descriptions" rows="3"
+            placeholder="Add tournament moto..."
+            class="textarea textarea-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]"></textarea>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <p class="text-sm font-medium">Select Tournament Trophy:</p>
+            <input type="file" name="trophy" class="file-input file-input-bordered file-input-info w-60" />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="select_type" class="block text-sm font-medium mb-2">Tournament Type</label>
+            <select name="select_type" id="select_type"
+              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="player_type" class="block text-sm font-medium mb-2">Player Type</label>
+            <select name="player_type" id="player_type"
+              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
+              <option value="single">Single</option>
+              <option value="team">Team</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-center items-center gap-4 pt-4">
+          <button type="button" id="next1"
+            class="btn bg-black text-white rounded-3xl px-8 border-[#13898B] border-2 hover:bg-[#0C6083]">
+            Next
+          </button>
+          <label for="verify_modal"
+            class="btn bg-gradient-to-r from-[#13898B] via-[#14D5D4] to-[#118285] text-white rounded-3xl px-8 border-0">
+            Cancel
+          </label>
+        </div>
+      </div>
+
+      <!-- Page 2 -->
+      <div id="page2" class="hidden">
+        <div>
+          <label class="block text-sm font-medium mb-3">Select a Format</label>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2">
+              <input type="radio" id="Knockout" name="format" value="Knockout" class="radio radio-info" />
+              Knockout
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" id="League" name="format" value="League" class="radio radio-info" />
+              League
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+          <div>
+            <label for="select_group" class="block text-sm font-medium mb-2">No. of Groups</label>
+            <select name="select_group" id="select_group"
+              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
+              <option value="2">2</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="team_num" class="block text-sm font-medium mb-2">Teams per Group</label>
+            <select name="team_num" id="team_num"
+              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
+              <option value="8">8</option>
+              <option value="16">16</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-center items-center gap-4 pt-6">
+          <button type="button" id="back1"
+            class="btn bg-gray-600 text-white rounded-3xl px-8 hover:bg-gray-500">
+            Back
+          </button>
+          <button type="button" id="next2"
+            class="btn bg-black text-white rounded-3xl px-8 border-[#13898B] border-2 hover:bg-[#0C6083]">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Page 3 -->
+      <div id="page3" class="hidden">
+        <p class="text-lg font-semibold mb-4">Team Details:</p>
+
+        <div class="grid grid-cols-1 gap-4">
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 1</label>
+                <input type="text" name="team1" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team1_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 2</label>
+                <input type="text" name="team2" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team2_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 3</label>
+                <input type="text" name="team3" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team3_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 4</label>
+                <input type="text" name="team4" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team4_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 5</label>
+                <input type="text" name="team5" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team5_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 6</label>
+                <input type="text" name="team6" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team1_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 7</label>
+                <input type="text" name="team7" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team7_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+
+            <div class="flex items-center gap-5">
+                <label class="w-30">Team 8</label>
+                <input type="text" name="team7" placeholder="Type name..."
+                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                <input type="file" name="team7_logo" class="file-input file-input-bordered file-input-info w-40" />
+            </div>
+        </div>
+
+        <div class="flex justify-center items-center gap-4 pt-6">
+          <button type="button" id="back2"
+            class="btn bg-gray-600 text-white rounded-3xl px-8 hover:bg-gray-500">
+            Back
+          </button>
+          <button type="submit"
+            class="btn bg-gradient-to-r from-[#13898B] via-[#14D5D4] to-[#118285] text-white rounded-3xl px-8 border-0">
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <label class="modal-backdrop" for="verify_modal">Close</label>
+</div>
+
+<script>
+    const page1 = document.getElementById("page1");
+    const page2 = document.getElementById("page2");
+    const page3 = document.getElementById("page3");
+
+    document.getElementById("next1").onclick = () => {
+        page1.classList.add("hidden");
+        page2.classList.remove("hidden");
+    };
+
+    document.getElementById("back1").onclick = () => {
+        page2.classList.add("hidden");
+        page1.classList.remove("hidden");
+    };
+
+    document.getElementById("next2").onclick = () => {
+        page2.classList.add("hidden");
+        page3.classList.remove("hidden");
+    };
+
+    document.getElementById("back2").onclick = () => {
+        page3.classList.add("hidden");
+        page2.classList.remove("hidden");
+    };
+</script>
+
+
+
+
+    
+
     
 </body>
 
