@@ -88,20 +88,45 @@
         </section>
 
         <section class="mb-20">
+            <div class="lg:w-8/12 lg:mx-auto h-auto mx-5 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-            <div class="lg:w-8/12 lg:mx-auto h-auto mx-5">
-                <h1 class="text-4xl font-cs-gelios text-white mb-5">Tournament</h1>
-                <div class="lg:w-[450px] lg:h-[250px] flex flex-col gap-4 items-center justify-center 
-                rounded-xl border-2 border-white/30 
-                bg-white/4 backdrop-blur-md shadow-xl p-20 lg:p-0">
+                <!-- Section Title -->
+                <h1 class="col-span-full text-3xl sm:text-4xl font-cs-gelios text-white mb-8 text-center lg:text-left">
+                    Tournament
+                </h1>
+
+                <div class="w-full flex flex-col gap-4 items-center justify-center
+                            rounded-xl border-2 border-white/30
+                            bg-white/5 backdrop-blur-md shadow-xl p-6 sm:p-10 text-center">
                     <button class="btn border-2 border-[#13898B] text-white rounded-full w-14 h-14 bg-white/5">
-                       <p class="text-2xl text-gray-400"><i class="bi bi-plus-lg"></i></p> 
-                    </button>
-                    <p class="text-2xl text-white">Add your Tournament</p> 
-                </div>
-            </div>
+                       <p class="text-2xl text-gray-400"><i class="bi bi-plus-lg"></i></p>
 
+                    </button>
+                    <p class="text-2xl text-white">Add your Tournament</p>
+                </div>
+                {% for i in tournaments %}
+                    <div class="w-full max-w-lg mx-auto lg:max-w-md bg-white/5 backdrop-blur-md rounded-xl border border-white/20 shadow-xl p-6 lg:p-8 flex flex-col gap-4">
+
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+                            <p class="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
+                                {{i.name}}
+                            </p>
+                            <img src="{% static 'trophies/Trophy1.png' %}" alt="Trophy" class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain mx-auto sm:mx-0 lg:scale-120">
+                        </div>
+
+                        <p class="text-white/80 text-sm sm:text-base">
+                            {{i.created_at}}
+                        </p>
+
+                        <a href="#" class="inline-flex items-center text-white/90 hover:text-white font-medium text-sm sm:text-base transition-all">
+                            <i class="bi bi-arrow-up-right-circle mr-2 text-lg"></i> View
+                        </a>
+
+                    </div>
+                {% endfor %}
+            </div>
         </section>
+
 
         <section class="lg:w-8/12 mx-auto h-auto mb-25">
             <div class="mx-5 lg:mx-0 text-center lg:text-left">

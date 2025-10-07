@@ -16,6 +16,7 @@ class UserAccount(models.Model):
 
 
 class Tournament(models.Model):
+    user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name="tournaments")
     code = models.CharField(max_length=8, unique=True, editable=False)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)

@@ -51,7 +51,12 @@ def dashboard(request):
     except UserAccount.DoesNotExist:
         return redirect("login")
 
-    return render(request, "demo.html", {"name": name})
+    tournaments = Tournament.objects.filter(user=user).order_by('-created_at')
+
+    return render(request, "demo.html", {
+        "name": name,
+        "tournaments": tournaments
+    })
 
 
 def logout_view(request):
@@ -63,9 +68,11 @@ def logout_view(request):
 
 def create_tournament(request):
     if request.method == "POST":
+        user_id = request.session.get("user_id")
+        user = UserAccount.objects.get(id=user_id)
         name = request.POST.get("tournament_name")
         description = request.POST.get("tournament_descriptions")
-        trophy = request.FILES.get("trophy")  # you’ll need to update HTML to allow trophy upload
+        trophy = request.POST.get("trophy")  # you’ll need to update HTML to allow trophy upload
         t_type = request.POST.get("select_type")
         player_type = request.POST.get("player_type")
         format_choice = request.POST.get("format")
@@ -74,6 +81,7 @@ def create_tournament(request):
 
         # Save tournament
         tournament = Tournament.objects.create(
+            user=user,
             name=name,
             description=description,
             trophy=trophy,
@@ -101,10 +109,6 @@ def create_tournament(request):
         return redirect("dashboard")  # redirect after success
 
     return render(request, "tournament_form.html")
-
-
-
-
 
 
 def generate_league_fixtures(tournament):
