@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from .models import UserAccount, Tournament, Team
+from .models import UserAccount, Tournament, Team, Match
 from .forms import SignupForm
 from django.views.decorators.cache import never_cache
+from django.utils import timezone
+import itertools
 
 def signup_save(request):
     if request.method == "POST":
@@ -92,6 +94,9 @@ def create_tournament(request):
                     name=team_name,
                     logo=team_logo
                 )
+        if format_choice.lower() == "league":
+            num_matches = generate_league_fixtures(tournament)
+            print(f"{num_matches} matches created for tournament '{tournament.name}'")
 
         return redirect("dashboard")  # redirect after success
 
@@ -100,4 +105,22 @@ def create_tournament(request):
 
 
 
+
+
+def generate_league_fixtures(tournament):
+    teams = list(tournament.teams.all())
+
+    # Clear previous matches if any
+    tournament.matches.all().delete()
+
+    fixtures = []
+    # Generate all possible pairs of teams
+    for team1, team2 in itertools.combinations(teams, 2):
+        # Each pair plays twice (home & away)
+        fixtures.append(Match(tournament=tournament, team1=team1, team2=team2))
+        fixtures.append(Match(tournament=tournament, team1=team2, team2=team1))
+
+    # Bulk create all matches in DB
+    Match.objects.bulk_create(fixtures)
+    return f"{len(fixtures)} matches created for tournament '{tournament.name}'"
 

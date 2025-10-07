@@ -52,3 +52,18 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Match(models.Model):
+    tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name="matches")
+    team1 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team1_matches")
+    team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team2_matches")
+    match_date = models.DateTimeField(blank=True, null=True)  # optional
+    team1_score = models.IntegerField(default=0)
+    team2_score = models.IntegerField(default=0)
+    played = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.team1.name} vs {self.team2.name}"
