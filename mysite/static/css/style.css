@@ -13,3 +13,8 @@
   font-family: "Poppins", sans-serif;
 
 }
+
+.selected-trophy {
+  border: 3px solid #14D5D4;
+  border-radius: 10px;
+}

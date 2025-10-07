@@ -1,5 +1,6 @@
 from django.db import models
-
+import random
+import string
 
 
 class UserAccount(models.Model):
@@ -15,7 +16,7 @@ class UserAccount(models.Model):
 
 
 class Tournament(models.Model):
-
+    code = models.CharField(max_length=8, unique=True, editable=False)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     trophy = models.ImageField(upload_to="trophies/", blank=True, null=True)
@@ -28,6 +29,20 @@ class Tournament(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = self.generate_unique_code()
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def generate_unique_code():
+        """Generate a unique 6-character alphanumeric code."""
+        from .models import Tournament  # avoid circular import
+        while True:
+            code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+            if not Tournament.objects.filter(code=code).exists():
+                return code
 
 
 class Team(models.Model):

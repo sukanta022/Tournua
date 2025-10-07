@@ -200,7 +200,7 @@
     <!-- Modal Title -->
     <h2 class="text-2xl font-bold mb-6 text-center">Create Tournament</h2>
 
-    <!-- Form -->
+      <!-- Form -->
     <form action="{% url 'create_tournament' %}" method="post" enctype="multipart/form-data" class="space-y-5">
       {% csrf_token %}
 
@@ -220,12 +220,37 @@
             class="textarea textarea-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]"></textarea>
         </div>
 
-        <div class="flex items-center gap-4">
-            <p class="text-sm font-medium">Select Tournament Trophy:</p>
-            <input type="file" name="trophy" class="file-input file-input-bordered file-input-info w-60" />
+        <!-- Trophy Selection -->
+        <div>
+          <label class="block text-sm font-medium mb-3">Select Tournament Trophy:</label>
+          <div class="flex gap-6">
+            <label class="cursor-pointer flex flex-col items-center trophy-option">
+              <input type="radio" name="trophy" value="Trophy1.png" class="hidden" />
+              <img src="{% static 'trophies/Trophy1.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+              <span class="text-white mt-1">Golden Cup</span>
+            </label>
+
+            <label class="cursor-pointer flex flex-col items-center trophy-option">
+              <input type="radio" name="trophy" value="Trophy2.png" class="hidden" />
+              <img src="{% static 'trophies/Trophy2.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+              <span class="text-white mt-1">Silver Cup</span>
+            </label>
+
+            <label class="cursor-pointer flex flex-col items-center trophy-option">
+              <input type="radio" name="trophy" value="Trophy3.png" class="hidden" />
+              <img src="{% static 'trophies/Trophy3.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+              <span class="text-white mt-1">Bronze Cup</span>
+            </label>
+
+              <label class="cursor-pointer flex flex-col items-center trophy-option">
+              <input type="radio" name="trophy" value="Trophy4.png" class="hidden" />
+              <img src="{% static 'trophies/Trophy4.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+              <span class="text-white mt-1">Bronze Cup</span>
+            </label>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
           <div>
             <label for="select_type" class="block text-sm font-medium mb-2">Tournament Type</label>
             <select name="select_type" id="select_type"
@@ -306,7 +331,7 @@
       </div>
 
       <!-- Page 3 -->
-      <div id="page3" class="hidden">
+       <div id="page3" class="hidden">
         <p class="text-lg font-semibold mb-4">Team Details:</p>
 
         <div class="grid grid-cols-1 gap-4">
@@ -385,30 +410,52 @@
 </div>
 
 <script>
-    const page1 = document.getElementById("page1");
-    const page2 = document.getElementById("page2");
-    const page3 = document.getElementById("page3");
+  // Page Navigation
+  const page1 = document.getElementById("page1");
+  const page2 = document.getElementById("page2");
+  const page3 = document.getElementById("page3");
 
-    document.getElementById("next1").onclick = () => {
-        page1.classList.add("hidden");
-        page2.classList.remove("hidden");
-    };
+  document.getElementById("next1").onclick = () => {
+    page1.classList.add("hidden");
+    page2.classList.remove("hidden");
+  };
 
-    document.getElementById("back1").onclick = () => {
-        page2.classList.add("hidden");
-        page1.classList.remove("hidden");
-    };
+  document.getElementById("back1").onclick = () => {
+    page2.classList.add("hidden");
+    page1.classList.remove("hidden");
+  };
 
-    document.getElementById("next2").onclick = () => {
-        page2.classList.add("hidden");
-        page3.classList.remove("hidden");
-    };
+  document.getElementById("next2").onclick = () => {
+    page2.classList.add("hidden");
+    page3.classList.remove("hidden");
+  };
 
-    document.getElementById("back2").onclick = () => {
-        page3.classList.add("hidden");
-        page2.classList.remove("hidden");
-    };
+  document.getElementById("back2").onclick = () => {
+    page3.classList.add("hidden");
+    page2.classList.remove("hidden");
+  };
+
+  // Trophy Selection Highlight
+  const trophyOptions = document.querySelectorAll(".trophy-option");
+  trophyOptions.forEach(option => {
+    option.addEventListener("click", () => {
+      // remove highlight from all
+      trophyOptions.forEach(opt => {
+        opt.querySelector("img").classList.remove("border-[#14D5D4]");
+      });
+      // highlight selected
+      option.querySelector("img").classList.add("border-[#14D5D4]");
+      // check radio input
+      option.querySelector("input").checked = true;
+    });
+  });
 </script>
+
+
+
+
+
+
 
 
 
