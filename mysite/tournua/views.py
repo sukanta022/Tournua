@@ -138,3 +138,41 @@ def tournament_view(request, tournament_id):
         'matches': matches
     }
     return render(request, 'view.html', context)
+
+
+
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Match
+
+def update_match_score(request):
+    if request.method == "POST":
+        match_id = request.POST.get("match_id")
+        team1_score = request.POST.get("team1_score")
+        team2_score = request.POST.get("team2_score")
+
+        # Validate input
+        try:
+            team1_score = int(team1_score)
+            team2_score = int(team2_score)
+        except (ValueError, TypeError):
+            messages.error(request, "Please enter valid integer scores.")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        # Get the match
+        match = get_object_or_404(Match, id=match_id)
+
+        # Update scores and mark as played
+        match.team1_score = team1_score
+        match.team2_score = team2_score
+        match.played = True
+        match.save()
+
+        messages.success(request, f"Scores updated for {match.team1.name} vs {match.team2.name}")
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    # If someone tries GET request
+    return redirect('/')
+
+
