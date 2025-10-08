@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .models import UserAccount, Tournament, Team, Match
@@ -128,3 +128,13 @@ def generate_league_fixtures(tournament):
     Match.objects.bulk_create(fixtures)
     return f"{len(fixtures)} matches created for tournament '{tournament.name}'"
 
+
+
+def tournament_view(request, tournament_id):
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    matches = Match.objects.filter(tournament=tournament).select_related('team1', 'team2').order_by('created_at')
+    context = {
+        'tournament': tournament,
+        'matches': matches
+    }
+    return render(request, 'view.html', context)
