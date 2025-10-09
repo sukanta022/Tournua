@@ -2,188 +2,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ tournament.name }} | Matches</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ tournament.name }} | Matches</title>
 
-    <!-- Tailwind + DaisyUI -->
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<!-- Tailwind + DaisyUI -->
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="bg-[#001717]">
 
 <!-- Navbar -->
 <header>
-    <div class="navbar shadow-sm px-2 py-6 lg:p-6">
-        <div class="navbar-start">
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                         viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                              stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"/>
-                    </svg>
-                </div>
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-52 p-2 shadow text-white bg-[#001717]">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Tournament</a></li>
-                    <li><a href="">About us</a></li>
-                </ul>
-            </div>
-            <a class="btn btn-ghost text-[28px] text-[#FFFFFF] font-cs-gelios">Tournua</a>
-        </div>
-
-        <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal px-1 text-white">
-                <li><a href="">Home</a></li>
-                <li><a href="">Tournament</a></li>
-                <li><a href="">About us</a></li>
-            </ul>
-        </div>
-
-        <div class="navbar-end flex gap-4">
-            <a href="{% url 'logout' %}" class="btn relative inline-flex items-center justify-center w-12 h-12 text-white bg-black rounded-full">
-                <span class="absolute inset-0 rounded-full p-[2px] bg-gradient-to-r from-[#13898B] via-[#14D5D4] via-[#0C6083] to-[#118285]"></span>
-                <span class="relative z-10 flex items-center justify-center w-full h-full rounded-full"><i class="bi bi-box-arrow-right text-lg"></i></span>
-            </a>
-        </div>
+  <div class="navbar shadow-sm px-4 py-4 lg:px-8 lg:py-6 flex justify-between items-center">
+    <a class="btn btn-ghost text-2xl lg:text-3xl text-white font-cs-gelios">Tournua</a>
+    <div class="hidden lg:flex gap-8 text-white font-medium">
+      <a href="#">Home</a>
+      <a href="#">Tournament</a>
+      <a href="#">About us</a>
     </div>
+    <a href="{% url 'logout' %}" class="relative inline-flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 text-white bg-black rounded-full">
+      <span class="absolute inset-0 rounded-full p-[2px] bg-gradient-to-r from-[#13898B] via-[#14D5D4] via-[#0C6083] to-[#118285]"></span>
+      <span class="relative z-10 flex items-center justify-center w-full h-full rounded-full">
+        <i class="bi bi-box-arrow-right text-lg"></i>
+      </span>
+    </a>
+  </div>
 </header>
 
-<!-- Tournament Info -->
-<main>
-<section class="flex items-center justify-center gap-4">
-    <div class="mx-auto h-auto w-9/12 bg-cover bg-center">
+<!-- Main Content -->
+<main class="flex flex-col items-center px-4 py-10 gap-10 lg:px-20">
 
-        <div class="flex gap-2 justify-start items-center">
-            <img src="{% static 'trophies/Trophy1.png' %}" alt="" class="w-50 h-50">
-            <div class="text-white space-y-4">
-                <p class="text-5xl">{{ tournament.name }}</p>
-                <p class="text-xl">{{ tournament.description }}</p>
-                <p class="text-xl"><b>Tournament Code:</b> {{ tournament.code }}</p>
-            </div>
-        </div>
+  <!-- Tournament Info -->
+  <div class="w-full lg:w-4/5 rounded-2xl p-6 sm:p-10 space-y-6">
 
-        <!-- Toggle Buttons -->
-        <div class="w-full flex rounded-3xl border-2 border-[#13898B] overflow-hidden text-white bg-[#000000]/80 backdrop-blur-md mt-6">
-            <button class="w-1/2 py-2.5 font-medium transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
-                Matches
-            </button>
-            <button class="w-1/2 py-2.5 font-medium transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
-                Leaderboard
-            </button>
-        </div>
-
-        <!-- Match Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mt-8 mb-8">
-            {% for match in matches %}
-            <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
-
-                <p class="text-white text-center text-lg font-semibold mb-5">
-                    Match {{ forloop.counter }}
-                </p>
-
-                <div class="flex items-center justify-between w-full">
-                    <!-- Team 1 -->
-                    <div class="flex flex-col items-center space-y-2">
-                        <img src="{% static 'trophies/Logo1.png' %}" alt="Team 1 Logo" class="w-16 h-16">
-                        <p class="text-lg text-white font-semibold text-center">{{ match.team1.name }}</p>
-                    </div>
-
-                    <!-- Scores + VS -->
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="flex items-center gap-4 text-white text-3xl font-bold">
-                            <span>{{ match.team1_score|default:"-" }}</span>
-                            <span class="text-[#13C4C6] text-2xl">VS</span>
-                            <span>{{ match.team2_score|default:"-" }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Team 2 -->
-                    <div class="flex flex-col items-center space-y-2">
-                        <img src="{% static 'trophies/Logo1.png' %}" alt="Team 2 Logo" class="w-16 h-16">
-                        <p class="text-lg text-white font-semibold text-center">{{ match.team2.name }}</p>
-                    </div>
-                </div>
-
-                <hr class="my-4 border-white/20">
-
-                <!-- Update Button -->
-                <div class="flex justify-end">
-                    <label
-                        for="verify_modal"
-                        class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
-                        onclick="openModal('{{ match.id }}', '{{ match.team1.name }}', '{{ match.team2.name }}', '{{ match.team1_score }}', '{{ match.team2_score }}')">
-                        Update
-                    </label>
-                </div>
-
-            </div>
-            {% endfor %}
-        </div>
-
+    <!-- Tournament Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+      <img src="{% static 'trophies/Trophy1.png' %}" alt="Trophy" class="w-24 sm:w-32 lg:w-40 object-contain mx-auto sm:mx-0">
+      <div class="text-white text-center sm:text-left space-y-2">
+        <p class="text-3xl sm:text-4xl lg:text-5xl font-semibold">{{ tournament.name }}</p>
+        <p class="text-lg sm:text-xl text-white/80">{{ tournament.description }}</p>
+        <p class="text-lg sm:text-xl text-white/80"><b>Tournament Code:</b> {{ tournament.code }}</p>
+      </div>
     </div>
-</section>
+
+    <!-- Toggle Buttons -->
+    <div class="w-full flex rounded-3xl border-2 border-[#13898B] overflow-hidden text-white bg-black/70 backdrop-blur-md mt-6">
+      <button class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
+        Matches
+      </button>
+      <a href="{% url 'leaderboard' tournament.id %}" class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
+        Leaderboard
+      </a>
+    </div>
+
+    <!-- Match Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      {% for match in matches %}
+      <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
+
+        <!-- Match Header -->
+        <p class="text-white text-center text-lg font-semibold mb-5">
+          Match {{ forloop.counter }}
+        </p>
+
+        <!-- Teams + Scores -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 w-full">
+          <!-- Team 1 -->
+          <div class="flex flex-col items-center space-y-2">
+            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+            <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team1.name }}</p>
+          </div>
+
+          <!-- Scores + VS -->
+          <div class="flex items-center gap-4 text-white text-3xl sm:text-4xl font-bold">
+            <span>{{ match.team1_score|default:"-" }}</span>
+            <span class="text-[#13C4C6] text-2xl sm:text-3xl">VS</span>
+            <span>{{ match.team2_score|default:"-" }}</span>
+          </div>
+
+          <!-- Team 2 -->
+          <div class="flex flex-col items-center space-y-2">
+            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 2 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+            <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team2.name }}</p>
+          </div>
+        </div>
+
+        <hr class="my-4 border-white/20">
+
+        <!-- Update Button -->
+        <div class="flex justify-center">
+          <label
+            for="verify_modal"
+            class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
+            onclick="openModal('{{ match.id }}', '{{ match.team1.name }}', '{{ match.team2.name }}', '{{ match.team1_score }}', '{{ match.team2_score }}')">
+            Update
+          </label>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
 </main>
 
 <!-- Modal -->
 <input type="checkbox" id="verify_modal" class="modal-toggle" />
 <div class="modal backdrop-blur-sm" role="dialog">
-    <div class="modal-box max-w-2xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-8">
-        <label for="verify_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+  <div class="modal-box max-w-2xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+    <label for="verify_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
 
-        <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">Enter Match Scores</h2>
+    <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">Enter Match Scores</h2>
 
-        <form action="{% url 'update_match_score' %}" method="post" class="space-y-5">
-            {% csrf_token %}
-            <input type="hidden" id="modal_match_id" name="match_id">
+    <form action="{% url 'update_match_score' %}" method="post" class="space-y-5">
+      {% csrf_token %}
+      <input type="hidden" id="modal_match_id" name="match_id">
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                    <label id="team1_label" for="team1_score" class="block mb-2 text-sm font-medium">Team 1 Score</label>
-                    <input type="text" id="team1_score" name="team1_score"
-                           class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg">
-                </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label id="team1_label" for="team1_score" class="block mb-2 text-sm font-medium">Team 1 Score</label>
+          <input type="text" id="team1_score" name="team1_score"
+                 class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg">
+        </div>
 
-                <div>
-                    <label id="team2_label" for="team2_score" class="block mb-2 text-sm font-medium">Team 2 Score</label>
-                    <input type="text" id="team2_score" name="team2_score"
-                           class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg">
-                </div>
-            </div>
+        <div>
+          <label id="team2_label" for="team2_score" class="block mb-2 text-sm font-medium">Team 2 Score</label>
+          <input type="text" id="team2_score" name="team2_score"
+                 class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg">
+        </div>
+      </div>
 
-            <hr class="my-4 border-white/20">
+      <hr class="my-4 border-white/20">
 
-            <div class="flex justify-end gap-3 mt-6">
-                <label for="verify_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
-                    Cancel
-                </label>
-                <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
-                    Submit
-                </button>
-            </div>
-        </form>
-    </div>
-    <label class="modal-backdrop" for="verify_modal">Close</label>
+      <div class="flex justify-end gap-3 mt-6">
+        <label for="verify_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
+          Cancel
+        </label>
+        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+  <label class="modal-backdrop" for="verify_modal">Close</label>
 </div>
 
 <!-- JS -->
 <script>
 function openModal(matchId, team1, team2, team1Score, team2Score) {
-    document.getElementById("modal_match_id").value = matchId;
-    document.getElementById("team1_label").innerText = `${team1} Score`;
-    document.getElementById("team2_label").innerText = `${team2} Score`;
-    document.getElementById("team1_score").placeholder = `Enter ${team1} Score`;
-    document.getElementById("team2_score").placeholder = `Enter ${team2} Score`;
-    document.getElementById("team1_score").value = team1Score || "";
-    document.getElementById("team2_score").value = team2Score || "";
+  document.getElementById("modal_match_id").value = matchId;
+  document.getElementById("team1_label").innerText = `${team1} Score`;
+  document.getElementById("team2_label").innerText = `${team2} Score`;
+  document.getElementById("team1_score").placeholder = `Enter ${team1} Score`;
+  document.getElementById("team2_score").placeholder = `Enter ${team2} Score`;
+  document.getElementById("team1_score").value = team1Score || "";
+  document.getElementById("team2_score").value = team2Score || "";
 }
 </script>
 

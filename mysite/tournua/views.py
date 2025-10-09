@@ -176,3 +176,92 @@ def update_match_score(request):
     return redirect('/')
 
 
+from django.shortcuts import render, get_object_or_404
+from .models import Tournament, Match, Team
+
+def leaderboard(request, tournament_id):
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+    matches = Match.objects.filter(tournament=tournament, played=True)
+    teams = Team.objects.filter(tournament=tournament)  # all teams in tournament
+
+    # Initialize standings for all teams
+    standings = {}
+    for team in teams:
+        standings[team.id] = {
+            "team": team,
+            "MP": 0,
+            "W": 0,
+            "D": 0,
+            "L": 0,
+            "GS": 0,
+            "GC": 0,
+            "Pts": 0,
+            "played": False  # track if played at least one match
+        }
+
+    # Update stats for played matches
+    for match in matches:
+        t1 = match.team1
+        t2 = match.team2
+        s1 = match.team1_score
+        s2 = match.team2_score
+
+        standings[t1.id]["MP"] += 1
+        standings[t2.id]["MP"] += 1
+        standings[t1.id]["GS"] += s1
+        standings[t1.id]["GC"] += s2
+        standings[t2.id]["GS"] += s2
+        standings[t2.id]["GC"] += s1
+
+        standings[t1.id]["played"] = True
+        standings[t2.id]["played"] = True
+
+        if s1 > s2:
+            standings[t1.id]["W"] += 1
+            standings[t2.id]["L"] += 1
+            standings[t1.id]["Pts"] += 3
+        elif s1 < s2:
+            standings[t2.id]["W"] += 1
+            standings[t1.id]["L"] += 1
+            standings[t2.id]["Pts"] += 3
+        else:
+            standings[t1.id]["D"] += 1
+            standings[t2.id]["D"] += 1
+            standings[t1.id]["Pts"] += 1
+            standings[t2.id]["Pts"] += 1
+
+    # Convert to list
+    leaderboard = list(standings.values())
+
+    # Sort: first played teams by Pts->GD->GS, then unplayed teams at the bottom
+    played_teams = [t for t in leaderboard if t["played"]]
+    unplayed_teams = [t for t in leaderboard if not t["played"]]
+
+    # Sort played teams
+    played_teams.sort(key=lambda x: (x["Pts"], x["GS"] - x["GC"], x["GS"]), reverse=True)
+
+    # Combine: played first, unplayed at bottom
+    leaderboard = played_teams + unplayed_teams
+
+    # Assign position and format values
+    for i, row in enumerate(leaderboard, start=1):
+        row["P"] = i
+        # For unplayed teams, set all numeric stats to "-"
+        if not row["played"]:
+            for key in ["MP", "W", "D", "L", "GS", "GC", "Pts"]:
+                row[key] = "-"
+
+    return render(request, "leaderboard.html", {
+        "tournament": tournament,
+        "leaderboard": leaderboard
+    })
+
+
+
+
+
+
+
+
+
+

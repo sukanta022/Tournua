@@ -27,4 +27,6 @@ path('logout/', views.logout_view, name='logout'),
 path("create-tournament/", views.create_tournament, name="create_tournament"),
 path("tournament/<int:tournament_id>", views.tournament_view, name="viewTournament"),
 path('update-match-score/', views.update_match_score, name='update_match_score'),
+path("tournament/<int:tournament_id>/leaderboard/", views.leaderboard, name="leaderboard"),
+
 ]
