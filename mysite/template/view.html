@@ -40,7 +40,7 @@
 <main class="flex flex-col items-center px-4 py-10 gap-10 lg:px-20">
 
   <!-- Tournament Info -->
-  <div class="w-full lg:w-4/5 rounded-2xl p-6 sm:p-10 space-y-6">
+  <div class="mx-auto h-auto w-10/12  bg-cover bg-center">
 
     <!-- Tournament Header -->
     <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
@@ -64,51 +64,100 @@
 
     <!-- Match Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-      {% for match in matches %}
-      <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
+  {% for match in matches %}
+  <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
 
-        <!-- Match Header -->
-        <p class="text-white text-center text-lg font-semibold mb-5">
-          Match {{ forloop.counter }}
-        </p>
+    <!-- Match Header -->
+    <p class="text-white text-center text-lg font-semibold mb-5">
+      Match {{ forloop.counter }}
+    </p>
 
-        <!-- Teams + Scores -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 w-full">
-          <!-- Team 1 -->
-          <div class="flex flex-col items-center space-y-2">
-            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
-            <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team1.name }}</p>
-          </div>
+    <!-- Teams + Scores -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6 w-full">
 
-          <!-- Scores + VS -->
-          <div class="flex items-center gap-4 text-white text-3xl sm:text-4xl font-bold">
-            <span>{{ match.team1_score|default:"-" }}</span>
-            <span class="text-[#13C4C6] text-2xl sm:text-3xl">VS</span>
-            <span>{{ match.team2_score|default:"-" }}</span>
-          </div>
-
-          <!-- Team 2 -->
-          <div class="flex flex-col items-center space-y-2">
-            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 2 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
-            <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team2.name }}</p>
-          </div>
+      <!-- Team 1 -->
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <img src="{% static 'trophies/Logo1.png' %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+        <div class="flex items-center justify-center">
+          {% if match.played %}
+            {% if match.team1_score > match.team2_score %}
+              <i class="bi bi-dot text-green-400 text-3xl"></i>
+            {% elif match.team1_score < match.team2_score %}
+              <i class="bi bi-dot text-red-500 text-3xl"></i>
+            {% else %}
+              <i class="bi bi-dot text-yellow-400 text-3xl"></i>
+            {% endif %}
+          {% endif %}
+          <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team1.name }}</p>
         </div>
-
-        <hr class="my-4 border-white/20">
-
-        <!-- Update Button -->
-        <div class="flex justify-center">
-          <label
-            for="verify_modal"
-            class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
-            onclick="openModal('{{ match.id }}', '{{ match.team1.name }}', '{{ match.team2.name }}', '{{ match.team1_score }}', '{{ match.team2_score }}')">
-            Update
-          </label>
-        </div>
-
       </div>
-      {% endfor %}
+
+      <!-- Scores + VS -->
+      <div class="flex flex-col items-center gap-2 text-white">
+        {% if match.played %}
+          <p class="text-sm text-green-400 font-medium uppercase tracking-wide">Played</p>
+        {% elif match.match_date %}
+          <p class="text-sm text-yellow-300 font-medium">{{ match.match_date|date:"M d, Y h:i A" }}</p>
+        {% else %}
+          <p class="text-sm text-gray-400 font-medium">Not Scheduled Yet</p>
+        {% endif %}
+
+        <div class="flex items-center gap-4 text-3xl sm:text-4xl font-bold">
+          <span>{{ match.team1_score|default_if_none:"-" }}</span>
+          <span class="text-[#13C4C6] text-2xl sm:text-3xl">VS</span>
+          <span>{{ match.team2_score|default_if_none:"-" }}</span>
+        </div>
+      </div>
+
+      <!-- Team 2 -->
+      <div class="flex flex-col items-center justify-center space-y-2">
+        <img src="{% static 'trophies/Logo1.png' %}" alt="Team 2 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+        <div class="flex items-center justify-center">
+          <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team2.name }}</p>
+          {% if match.played %}
+            {% if match.team2_score > match.team1_score %}
+              <i class="bi bi-dot text-green-400 text-3xl"></i>
+            {% elif match.team2_score < match.team1_score %}
+              <i class="bi bi-dot text-red-500 text-3xl"></i>
+            {% else %}
+              <i class="bi bi-dot text-yellow-400 text-3xl"></i>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
     </div>
+
+    <hr class="my-4 border-white/20">
+
+    <!-- Update Button -->
+    <div class="flex justify-center">
+      {% if not match.match_date %}
+      <!-- Case 1: Only Set Date -->
+      <label
+        for="date_modal"
+        class="btn bg-[#0f6c6d] hover:bg-[#13898B] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
+        onclick="openDateModal('{{ match.id }}')">
+        Set Date
+      </label>
+
+      {% elif match.match_date and not match.played %}
+      <!-- Case 2: Only Update Score -->
+      <label
+        for="verify_modal"
+        class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
+        onclick="openModal('{{ match.id }}', '{{ match.team1.name }}', '{{ match.team2.name }}', '{{ match.team1_score }}', '{{ match.team2_score }}')">
+        Update
+      </label>
+
+      {% elif match.played %}
+      <!-- Case 3: Both Buttons Gone -->
+      {% endif %}
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
 
   </div>
 </main>
@@ -154,6 +203,39 @@
   <label class="modal-backdrop" for="verify_modal">Close</label>
 </div>
 
+
+<input type="checkbox" id="date_modal" class="modal-toggle" />
+<div class="modal backdrop-blur-sm" role="dialog">
+  <div class="modal-box max-w-2xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+    <label for="date_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">Set Match Date & Time</h2>
+
+    <form action="{% url 'update_match_date' %}" method="post" class="space-y-5">
+      {% csrf_token %}
+      <input type="hidden" id="modal_date_match_id" name="match_id">
+
+      <div>
+        <label for="match_date" class="block mb-2 text-sm font-medium">Select Date & Time</label>
+        <input type="datetime-local" id="match_date" name="match_date"
+               class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg">
+      </div>
+
+      <hr class="my-4 border-white/20">
+
+      <div class="flex justify-end gap-3 mt-6">
+        <label for="date_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
+          Cancel
+        </label>
+        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+  <label class="modal-backdrop" for="date_modal">Close</label>
+</div>
+
 <!-- JS -->
 <script>
 function openModal(matchId, team1, team2, team1Score, team2Score) {
@@ -164,6 +246,10 @@ function openModal(matchId, team1, team2, team1Score, team2Score) {
   document.getElementById("team2_score").placeholder = `Enter ${team2} Score`;
   document.getElementById("team1_score").value = team1Score || "";
   document.getElementById("team2_score").value = team2Score || "";
+}
+
+function openDateModal(matchId) {
+  document.getElementById("modal_date_match_id").value = matchId;
 }
 </script>
 

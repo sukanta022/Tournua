@@ -257,6 +257,31 @@ def leaderboard(request, tournament_id):
     })
 
 
+from django.utils import timezone
+def update_match_date(request):
+    if request.method == "POST":
+        match_id = request.POST.get("match_id")
+        match_date = request.POST.get("match_date")
+
+        if not match_date:
+            messages.error(request, "Please select a valid date and time.")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        match = get_object_or_404(Match, id=match_id)
+
+        try:
+            # Convert string to datetime
+            from datetime import datetime
+            match.match_date = datetime.strptime(match_date, "%Y-%m-%dT%H:%M")
+            match.save()
+            messages.success(request, f"Match date updated for {match.team1.name} vs {match.team2.name}")
+        except ValueError:
+            messages.error(request, "Invalid date format. Please try again.")
+
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    return redirect('/')
+
 
 
 
