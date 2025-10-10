@@ -45,17 +45,60 @@ def dashboard(request):
     if not user_id:
         return redirect("login")
 
-    try:
-        user = UserAccount.objects.get(id=user_id)
-        name = user.full_name.split(" ")[0]
-    except UserAccount.DoesNotExist:
-        return redirect("login")
+    user = UserAccount.objects.get(id=user_id)
+    name = user.full_name.split(" ")[0]
 
-    tournaments = Tournament.objects.filter(user=user).order_by('-created_at')
+    # Tournaments user created
+    own_tournaments = Tournament.objects.filter(user=user)
+
+    # Tournaments user joined (excluding own)
+    joined_tournaments = Tournament.objects.filter(participants=user).exclude(user=user)
+
+    tournaments = own_tournaments | joined_tournaments
+    tournaments = tournaments.order_by('-created_at')
 
     return render(request, "demo.html", {
         "name": name,
-        "tournaments": tournaments
+        "tournaments": tournaments,
+        "user": user
+    })
+
+def join_tournament(request):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect("login")
+
+    user = UserAccount.objects.get(id=user_id)
+    error = None
+
+    if request.method == "POST":
+        code = request.POST.get("tournament_code").strip().upper()
+        try:
+            tournament = Tournament.objects.get(code=code)
+
+            if tournament.user == user:
+                error = "You cannot join your own tournament."
+            elif tournament.participants.filter(id=user.id).exists():
+                error = "You already joined this tournament."
+            else:
+                tournament.participants.add(user)
+                return redirect("dashboard")  # success
+
+        except Tournament.DoesNotExist:
+            error = "Invalid tournament code."
+
+    # **Fetch created tournaments + joined tournaments**
+    created_tournaments = Tournament.objects.filter(user=user).order_by('-created_at')
+    joined_tournaments = Tournament.objects.filter(participants=user).exclude(user=user).order_by('-created_at')
+
+    # Combine into one list (optional: keep separate in template)
+    tournaments = list(created_tournaments) + list(joined_tournaments)
+
+    return render(request, "demo.html", {
+        "error": error,
+        "tournaments": tournaments,
+        "user": user,
+        "name": user.full_name.split(" ")[0]
     })
 
 
@@ -131,13 +174,25 @@ def generate_league_fixtures(tournament):
 
 
 def tournament_view(request, tournament_id):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect("login")
+
+    user = get_object_or_404(UserAccount, id=user_id)
     tournament = get_object_or_404(Tournament, id=tournament_id)
     matches = Match.objects.filter(tournament=tournament).select_related('team1', 'team2').order_by('created_at')
+
+    # Check if current user is the creator
+    is_creator = tournament.user == user
+
     context = {
         'tournament': tournament,
-        'matches': matches
+        'matches': matches,
+        'user': user,
+        'is_creator': is_creator
     }
     return render(request, 'view.html', context)
+
 
 
 

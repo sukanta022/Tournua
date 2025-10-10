@@ -11,23 +11,24 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="bg-[#001717]">
+    <!-- Header -->
     <header>
         <div class="navbar shadow-sm px-2 py-6 lg:p-6">
             <div class="navbar-start">
                 <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
-                </div>
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-52 p-2 shadow text-white bg-[#001717]">
-                    <li><a href="">Home</a></li>
-                    <li><a href="">Tournament</a></li>
-                    <li><a href="">About us</a></li>
-                </ul>
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+                        </svg>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content rounded-box z-1 mt-3 w-52 p-2 shadow text-white bg-[#001717]">
+                        <li><a href="">Home</a></li>
+                        <li><a href="">Tournament</a></li>
+                        <li><a href="">About us</a></li>
+                    </ul>
                 </div>
                 <a class="btn btn-ghost text-[28px] text-[#FFFFFF] font-cs-gelios">Tournua</a>
             </div>
@@ -41,34 +42,33 @@
             </div>
 
             <div class="navbar-end flex gap-4">
-                <div class="bg-[#000000] text-white rounded-3xl lg:px-3 py-2 px-2 border-[#13898B] border-2 text-center">👋 Welcome, {{name}}</div>
+                <div class="bg-[#000000] text-white rounded-3xl lg:px-3 py-2 px-2 border-[#13898B] border-2 text-center">
+                    👋 Welcome, {{name}}
+                </div>
                 <a href="{% url 'logout' %}" class="btn relative inline-flex items-center justify-center w-12 h-12 text-white bg-black rounded-full">
                     <span class="absolute inset-0 rounded-full p-[2px] bg-gradient-to-r from-[#13898B] via-[#14D5D4] via-[#0C6083] to-[#118285]"></span>
                     <span class="relative z-10 flex items-center justify-center w-full h-full rounded-full"><i class="bi bi-box-arrow-right text-lg"></i></span>
                 </a>
-
-
             </div>
         </div>
-
     </header>
 
-    <main class="">
-
+    <!-- Main -->
+    <main>
+        <!-- Hero Section -->
         <section class="flex items-center justify-center gap-4 ">
             <div class="mx-left h-[400px] w-[110px] bg-cover mb-80 hidden lg:block" style="background-image: url('{% static 'images/bgLishtRight.png' %}');">
                 <img src="{% static 'images/bird.png' %}" alt="" class="h-100 w-100">
             </div>
 
-            <div class="mx-auto h-auto lg:h-[900px] lg:w-[1100px] bg-cover bg-center "
-         style="background-image: url('{% static 'images/trophy1.png' %}');">
+            <div class="mx-auto h-auto lg:h-[900px] lg:w-[1100px] bg-cover bg-center"
+                style="background-image: url('{% static 'images/trophy1.png' %}');">
 
                 <div class="flex flex-col items-center justify-center h-full text-center font-poppins mt-30 lg:mt-0">
                     <h1 class="text-4xl lg:text-6xl font-cs-gelios text-[#13898B]">Generate, Manage and Track Tournaments<br> </h1>
                     <h1 class="text-3xl font-cs-gelios text-white mt-4">All in One Place</h1>
                     <p class="text-lg text-white mb-12 mt-3">No more messy arrangements! <br>
-    Whether it’s friends, clubs, or communities, Tournuá makes every<br> match exciting with easy score tracking and live standings."</p>
-
+                        Whether it’s friends, clubs, or communities, Tournuá makes every<br> match exciting with easy score tracking and live standings."</p>
 
                     <div class="flex flex-col lg:flex-row gap-6 lg:gap-14 mb-20">
                         <button class="btn bg-[#000000] text-white rounded-3xl px-6 border-[#13898B] border-2">
@@ -77,36 +77,39 @@
                         <a class="btn bg-[#000000] text-white rounded-3xl px-6 border">Follow A Public Tournament</a>
                     </div>
                 </div>
-
             </div>
 
             <div class="mx-left h-[400px] w-[100px] bg-cover mb-80 hidden lg:block" style="background-image: url('{% static 'images/bgLight.png' %}');">
                 <img src="{% static 'images/birdsRight.png' %}" alt="" class="h-100 w-200">
             </div>
-
-
         </section>
 
+        <!-- Tournament Section -->
         <section class="mb-20">
             <div class="lg:w-8/12 lg:mx-auto h-auto mx-5 grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                <!-- Section Title -->
                 <h1 class="col-span-full text-3xl sm:text-4xl font-cs-gelios text-white mb-8 text-center lg:text-left">
                     Tournament
                 </h1>
 
+                <!-- Add Tournament Card -->
                 <div class="w-full flex flex-col gap-4 items-center justify-center
-                            rounded-xl border-2 border-white/30
-                            bg-white/5 backdrop-blur-md shadow-xl p-6 sm:p-10 text-center">
-                    <button class="btn border-2 border-[#13898B] text-white rounded-full w-14 h-14 bg-white/5">
-                       <p class="text-2xl text-gray-400"><i class="bi bi-plus-lg"></i></p>
+                    rounded-xl border-2 border-white/30
+                    bg-white/5 backdrop-blur-md shadow-xl p-6 sm:p-10 text-center">
 
-                    </button>
-                    <p class="text-2xl text-white">Add your Tournament</p>
+                    <!-- Button to open modal -->
+                    <label
+                        for="add_tournament"
+                        class="btn border-2 border-[#13898B] text-white rounded-full w-14 h-14 bg-white/5 flex items-center justify-center transition duration-200 hover:border-[#13C4C6] hover:bg-white/10">
+                        <i class="bi bi-plus-lg text-2xl text-gray-400"></i>
+                    </label>
+
+                    <p class="text-2xl text-white font-medium">Add your Tournament</p>
                 </div>
+
+                <!-- Existing Tournaments -->
                 {% for i in tournaments %}
                     <div class="w-full max-w-lg mx-auto lg:max-w-md bg-white/5 backdrop-blur-md rounded-xl border border-white/20 shadow-xl p-6 lg:p-8 flex flex-col gap-4">
-
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
                             <p class="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
                                 {{i.name}}
@@ -117,65 +120,62 @@
                         <p class="text-white/80 text-sm sm:text-base">
                             {{i.created_at}}
                         </p>
+                        <p class="text-sm text-white/70">
+            {% if user.id == i.user.id %}
+                Admin
+            {% else %}
+                Created by {{ i.user.full_name }}
+            {% endif %}
+        </p>
 
                         <a href="{% url 'viewTournament' i.id %}" class="inline-flex items-center text-white/90 hover:text-white font-medium text-sm sm:text-base transition-all">
                             <i class="bi bi-arrow-up-right-circle mr-2 text-lg"></i> View
                         </a>
-
                     </div>
                 {% endfor %}
             </div>
         </section>
 
-
+        <!-- About Section -->
         <section class="lg:w-8/12 mx-auto h-auto mb-25">
             <div class="mx-5 lg:mx-0 text-center lg:text-left">
                 <h1 class="text-4xl font-cs-gelios text-white mb-5">About Us</h1>
                 <p class="text-xl text-white font-poppins">At Tournua, we believe tournaments should be seamless, fair, and fun. Whether it’s traditional sports or eSports, organizing and tracking competitions shouldn’t be a hassle.<br>
                 That’s why we built Tournua – From Registration to Victory, Seamlessly. Our platform helps organizers create tournaments, manage teams, generate fixtures, update scores in real time, and keep participants informed every step of the way.</p>
             </div>
+            <!-- Feature Cards -->
             <div class="h-auto rounded-3xl border-2 border-white/30 bg-white/5 backdrop-blur-md shadow-xl grid lg:grid-cols-3 gap-4 mt-10 p-6 mx-5 lg:mx-0">
-                <div class="border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white class flex flex-col justify-center items-center gap-5 px-2 py-6">
-
+                <!-- Card 1 -->
+                <div class="flex flex-col justify-center items-center gap-5 px-2 py-6 border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white">
                     <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
                         <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
                     </div>
                     <p class="text-white text-2xl mb-2">Simplify Management</p>
                     <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
-
                 </div>
-
-                <div class="border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white class flex flex-col justify-center items-center gap-5 px-2 py-6">
-
-                <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
-                    <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
+                <!-- Card 2 -->
+                <div class="flex flex-col justify-center items-center gap-5 px-2 py-6 border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white">
+                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
+                        <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
                     </div>
                     <p class="text-white text-2xl mb-2">Simplify Management</p>
                     <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
-
                 </div>
-
+                <!-- Card 3 -->
                 <div class="flex flex-col justify-center items-center gap-5 px-2 py-6">
-
                     <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
                         <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
                     </div>
                     <p class="text-white text-2xl mb-2">Simplify Management</p>
                     <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
-
                 </div>
-
             </div>
         </section>
-
-
-
     </main>
 
+    <!-- Footer -->
     <footer class="w-full h-auto lg:h-90 overflow-hidden bg-white/6 backdrop-blur-md rounded-t-3xl lg:px-20 lg:pt-10 ">
-
         <div class="flex flex-col lg:flex-row justify-start lg:justify-between lg:items-center p-6 font-poppins">
-
             <div class="text-white flex flex-col items-start lg:justify-center lg:items-center gap-4 mb-8 lg:mb-0  lg:hidden">
                 <h1 class="text-2xl lg:text-3xl font-bold">Got a Tournament? Want to collaborate? </h1>
                 <button class="bg-gradient-to-r from-[#14D5D4] to-[#0C6083] text-white text-xl rounded-xl py-1 px-4">Subscribe  <i class="bi bi-play-fill"></i></button>
@@ -213,282 +213,134 @@
         <div class="text-center mt-9 hidden lg:block">
             <p class="font-cs-gelios text-9xl text-[#FFFFFF]/20">Lets Manage Tournament</p>
         </div>
-
     </footer>
+
+    <!-- Modals -->
+
+    <!-- Create Tournament Modal -->
     <input type="checkbox" id="verify_modal" class="modal-toggle" />
+    <div class="modal backdrop-blur-sm" role="dialog">
+      <div class="modal-box max-w-4xl w-11/12 bg-white/5 text-white rounded-2xl border border-white/20 shadow-2xl relative p-8">
+
+        <label for="verify_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+        <h2 class="text-2xl font-bold mb-6 text-center">Create Tournament</h2>
+
+        <!-- Form -->
+        <form action="{% url 'create_tournament' %}" method="post" enctype="multipart/form-data" class="space-y-5">
+            {% csrf_token %}
+            <!-- Page 1 -->
+            <div id="page1" class="space-y-4">
+                <!-- Tournament Name -->
+                <div>
+                    <label for="tournament_name" class="block text-sm font-medium mb-2">Tournament Name</label>
+                    <input id="tournament_name" name="tournament_name" type="text"
+                        placeholder="Type tournament name..."
+                        class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
+                </div>
+                <!-- Tournament Moto -->
+                <div>
+                    <label for="tournament_descriptions" class="block text-sm font-medium mb-2">Tournament Moto</label>
+                    <textarea id="tournament_descriptions" name="tournament_descriptions" rows="3"
+                        placeholder="Add tournament moto..."
+                        class="textarea textarea-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]"></textarea>
+                </div>
+                <!-- Trophy Selection -->
+                <div>
+                  <label class="block text-sm font-medium mb-3">Select Tournament Trophy:</label>
+                  <div class="flex gap-6">
+                    <label class="cursor-pointer flex flex-col items-center trophy-option">
+                      <input type="radio" name="trophy" value="Trophy1.png" class="hidden" />
+                      <img src="{% static 'trophies/Trophy1.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+                      <span class="text-white mt-1">Golden Cup</span>
+                    </label>
+
+                    <label class="cursor-pointer flex flex-col items-center trophy-option">
+                      <input type="radio" name="trophy" value="Trophy2.png" class="hidden" />
+                      <img src="{% static 'trophies/Trophy2.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+                      <span class="text-white mt-1">Silver Cup</span>
+                    </label>
+
+                    <label class="cursor-pointer flex flex-col items-center trophy-option">
+                      <input type="radio" name="trophy" value="Trophy3.png" class="hidden" />
+                      <img src="{% static 'trophies/Trophy3.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+                      <span class="text-white mt-1">Bronze Cup</span>
+                    </label>
+
+                    <label class="cursor-pointer flex flex-col items-center trophy-option">
+                      <input type="radio" name="trophy" value="Trophy4.png" class="hidden" />
+                      <img src="{% static 'trophies/Trophy4.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
+                      <span class="text-white mt-1">Bronze Cup</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                  <div>
+                    <label for="select_type" class="block text-sm font-medium mb-2">Select Tournament Type</label>
+                    <select id="select_type" name="select_type" class="select select-bordered w-full bg-white/10 text-white rounded-xl">
+                        <option disabled selected>-- Select --</option>
+                        <option value="Knockout">Knockout</option>
+                        <option value="League">League</option>
+                        <option value="Group">Group</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label for="player_type" class="block text-sm font-medium mb-2">Select Player Type</label>
+                    <select id="player_type" name="player_type" class="select select-bordered w-full bg-white/10 text-white rounded-xl">
+                        <option disabled selected>-- Select --</option>
+                        <option value="Single">Single</option>
+                        <option value="Team">Team</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                    <label for="format" class="block text-sm font-medium mb-2">Tournament Format</label>
+                    <select id="format" name="format" class="select select-bordered w-full bg-white/10 text-white rounded-xl">
+                        <option disabled selected>-- Select --</option>
+                        <option value="Knockout">Knockout</option>
+                        <option value="RoundRobin">Round Robin</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none w-full mt-4">Create Tournament</button>
+            </div>
+        </form>
+      </div>
+      <label class="modal-backdrop" for="verify_modal">Close</label>
+    </div>
+
+    <!-- Add Tournament Modal -->
+    <!-- Add Tournament Modal -->
+<input type="checkbox" id="add_tournament" class="modal-toggle" {% if error %}checked{% endif %} />
 <div class="modal backdrop-blur-sm" role="dialog">
-  <div class="modal-box max-w-4xl w-11/12 bg-white/5 text-white rounded-2xl border border-white/20 shadow-2xl relative p-8">
+  <div class="modal-box max-w-2xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+    <label for="add_tournament" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+    <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">Add Tournament</h2>
 
-    <!-- Close Button -->
-    <label for="verify_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
-
-    <!-- Modal Title -->
-    <h2 class="text-2xl font-bold mb-6 text-center">Create Tournament</h2>
-
-      <!-- Form -->
-    <form action="{% url 'create_tournament' %}" method="post" enctype="multipart/form-data" class="space-y-5">
+    <form action="{% url 'join_tournament' %}" method="post" class="space-y-6">
       {% csrf_token %}
 
-      <!-- Page 1 -->
-      <div id="page1" class="space-y-4">
-        <div>
-          <label for="tournament_name" class="block text-sm font-medium mb-2">Tournament Name</label>
-          <input id="tournament_name" name="tournament_name" type="text"
-            placeholder="Type tournament name..."
-            class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-        </div>
+      <!-- Error message -->
+      {% if error %}
+        <p class="text-red-500 text-sm font-medium mb-2">{{ error }}</p>
+      {% endif %}
 
-        <div>
-          <label for="tournament_descriptions" class="block text-sm font-medium mb-2">Tournament Moto</label>
-          <textarea id="tournament_descriptions" name="tournament_descriptions" rows="3"
-            placeholder="Add tournament moto..."
-            class="textarea textarea-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]"></textarea>
-        </div>
-
-        <!-- Trophy Selection -->
-        <div>
-          <label class="block text-sm font-medium mb-3">Select Tournament Trophy:</label>
-          <div class="flex gap-6">
-            <label class="cursor-pointer flex flex-col items-center trophy-option">
-              <input type="radio" name="trophy" value="Trophy1.png" class="hidden" />
-              <img src="{% static 'trophies/Trophy1.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
-              <span class="text-white mt-1">Golden Cup</span>
-            </label>
-
-            <label class="cursor-pointer flex flex-col items-center trophy-option">
-              <input type="radio" name="trophy" value="Trophy2.png" class="hidden" />
-              <img src="{% static 'trophies/Trophy2.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
-              <span class="text-white mt-1">Silver Cup</span>
-            </label>
-
-            <label class="cursor-pointer flex flex-col items-center trophy-option">
-              <input type="radio" name="trophy" value="Trophy3.png" class="hidden" />
-              <img src="{% static 'trophies/Trophy3.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
-              <span class="text-white mt-1">Bronze Cup</span>
-            </label>
-
-              <label class="cursor-pointer flex flex-col items-center trophy-option">
-              <input type="radio" name="trophy" value="Trophy4.png" class="hidden" />
-              <img src="{% static 'trophies/Trophy4.png' %}" class="w-20 h-20 border-2 border-transparent rounded-lg hover:border-[#14D5D4]" />
-              <span class="text-white mt-1">Bronze Cup</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div>
-            <label for="select_type" class="block text-sm font-medium mb-2">Tournament Type</label>
-            <select name="select_type" id="select_type"
-              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="player_type" class="block text-sm font-medium mb-2">Player Type</label>
-            <select name="player_type" id="player_type"
-              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
-              <option value="single">Single</option>
-              <option value="team">Team</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex justify-center items-center gap-4 pt-4">
-          <button type="button" id="next1"
-            class="btn bg-black text-white rounded-3xl px-8 border-[#13898B] border-2 hover:bg-[#0C6083]">
-            Next
-          </button>
-          <label for="verify_modal"
-            class="btn bg-gradient-to-r from-[#13898B] via-[#14D5D4] to-[#118285] text-white rounded-3xl px-8 border-0">
-            Cancel
-          </label>
-        </div>
+      <div>
+        <label for="tournament_code" class="block mb-2 text-sm font-medium text-white/80">Tournament Code</label>
+        <input type="text" id="tournament_code" name="tournament_code" placeholder="Type Tournament Code.." class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg" required>
       </div>
 
-      <!-- Page 2 -->
-      <div id="page2" class="hidden">
-        <div>
-          <label class="block text-sm font-medium mb-3">Select a Format</label>
-          <div class="flex gap-6">
-            <label class="flex items-center gap-2">
-              <input type="radio" id="Knockout" name="format" value="Knockout" class="radio radio-info" />
-              Knockout
-            </label>
-            <label class="flex items-center gap-2">
-              <input type="radio" id="League" name="format" value="League" class="radio radio-info" />
-              League
-            </label>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-          <div>
-            <label for="select_group" class="block text-sm font-medium mb-2">No. of Groups</label>
-            <select name="select_group" id="select_group"
-              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
-              <option value="2">2</option>
-              <option value="4">4</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="team_num" class="block text-sm font-medium mb-2">Teams per Group</label>
-            <select name="team_num" id="team_num"
-              class="select select-bordered w-full bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]">
-              <option value="8">8</option>
-              <option value="16">16</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="flex justify-center items-center gap-4 pt-6">
-          <button type="button" id="back1"
-            class="btn bg-gray-600 text-white rounded-3xl px-8 hover:bg-gray-500">
-            Back
-          </button>
-          <button type="button" id="next2"
-            class="btn bg-black text-white rounded-3xl px-8 border-[#13898B] border-2 hover:bg-[#0C6083]">
-            Next
-          </button>
-        </div>
-      </div>
-
-      <!-- Page 3 -->
-       <div id="page3" class="hidden">
-        <p class="text-lg font-semibold mb-4">Team Details:</p>
-
-        <div class="grid grid-cols-1 gap-4">
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 1</label>
-                <input type="text" name="team1" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team1_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 2</label>
-                <input type="text" name="team2" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team2_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 3</label>
-                <input type="text" name="team3" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team3_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 4</label>
-                <input type="text" name="team4" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team4_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 5</label>
-                <input type="text" name="team5" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team5_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 6</label>
-                <input type="text" name="team6" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team1_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 7</label>
-                <input type="text" name="team7" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team7_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-
-            <div class="flex items-center gap-5">
-                <label class="w-30">Team 8</label>
-                <input type="text" name="team7" placeholder="Type name..."
-                class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team7_logo" class="file-input file-input-bordered file-input-info w-40" />
-            </div>
-        </div>
-
-        <div class="flex justify-center items-center gap-4 pt-6">
-          <button type="button" id="back2"
-            class="btn bg-gray-600 text-white rounded-3xl px-8 hover:bg-gray-500">
-            Back
-          </button>
-          <button type="submit"
-            class="btn bg-gradient-to-r from-[#13898B] via-[#14D5D4] to-[#118285] text-white rounded-3xl px-8 border-0">
-            Submit
-          </button>
-        </div>
+      <div class="flex justify-end gap-3 mt-6">
+        <label for="add_tournament" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">Cancel</label>
+        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">Add</button>
       </div>
     </form>
   </div>
-
-  <label class="modal-backdrop" for="verify_modal">Close</label>
+  <label class="modal-backdrop" for="add_tournament">Close</label>
 </div>
 
-<script>
-  // Page Navigation
-  const page1 = document.getElementById("page1");
-  const page2 = document.getElementById("page2");
-  const page3 = document.getElementById("page3");
-
-  document.getElementById("next1").onclick = () => {
-    page1.classList.add("hidden");
-    page2.classList.remove("hidden");
-  };
-
-  document.getElementById("back1").onclick = () => {
-    page2.classList.add("hidden");
-    page1.classList.remove("hidden");
-  };
-
-  document.getElementById("next2").onclick = () => {
-    page2.classList.add("hidden");
-    page3.classList.remove("hidden");
-  };
-
-  document.getElementById("back2").onclick = () => {
-    page3.classList.add("hidden");
-    page2.classList.remove("hidden");
-  };
-
-  // Trophy Selection Highlight
-  const trophyOptions = document.querySelectorAll(".trophy-option");
-  trophyOptions.forEach(option => {
-    option.addEventListener("click", () => {
-      // remove highlight from all
-      trophyOptions.forEach(opt => {
-        opt.querySelector("img").classList.remove("border-[#14D5D4]");
-      });
-      // highlight selected
-      option.querySelector("img").classList.add("border-[#14D5D4]");
-      // check radio input
-      option.querySelector("input").checked = true;
-    });
-  });
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
-
-
 </html>

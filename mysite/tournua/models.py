@@ -27,6 +27,7 @@ class Tournament(models.Model):
     num_groups = models.IntegerField(default=2)
     teams_per_group = models.IntegerField(default=4)
     created_at = models.DateTimeField(auto_now_add=True)
+    participants = models.ManyToManyField(UserAccount, related_name="joined_tournaments", blank=True)
 
     def __str__(self):
         return self.name
