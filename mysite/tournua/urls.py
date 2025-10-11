@@ -30,4 +30,5 @@ path('update-match-score/', views.update_match_score, name='update_match_score')
 path("tournament/<int:tournament_id>/leaderboard/", views.leaderboard, name="leaderboard"),
 path('update_match_date/', views.update_match_date, name='update_match_date'),
 path('join-tournament/', views.join_tournament, name='join_tournament'),
+path("view-by-code/", views.view_tournament_by_code, name="view_tournament_by_code"),
 ]

@@ -174,16 +174,20 @@ def generate_league_fixtures(tournament):
 
 
 def tournament_view(request, tournament_id):
+    # Try to get logged in user, if exists
+    user = None
     user_id = request.session.get("user_id")
-    if not user_id:
-        return redirect("login")
+    if user_id:
+        try:
+            user = UserAccount.objects.get(id=user_id)
+        except UserAccount.DoesNotExist:
+            user = None
 
-    user = get_object_or_404(UserAccount, id=user_id)
     tournament = get_object_or_404(Tournament, id=tournament_id)
     matches = Match.objects.filter(tournament=tournament).select_related('team1', 'team2').order_by('created_at')
 
-    # Check if current user is the creator
-    is_creator = tournament.user == user
+    # Check if current user is the creator (only if logged in)
+    is_creator = user and tournament.user == user
 
     context = {
         'tournament': tournament,
@@ -192,6 +196,7 @@ def tournament_view(request, tournament_id):
         'is_creator': is_creator
     }
     return render(request, 'view.html', context)
+
 
 
 
@@ -313,6 +318,7 @@ def leaderboard(request, tournament_id):
 
 
 from django.utils import timezone
+from datetime import datetime
 def update_match_date(request):
     if request.method == "POST":
         match_id = request.POST.get("match_id")
@@ -325,17 +331,36 @@ def update_match_date(request):
         match = get_object_or_404(Match, id=match_id)
 
         try:
-            # Convert string to datetime
-            from datetime import datetime
-            match.match_date = datetime.strptime(match_date, "%Y-%m-%dT%H:%M")
+            # Convert string to datetime (naive)
+            naive_datetime = datetime.strptime(match_date, "%Y-%m-%dT%H:%M")
+
+            # Make it timezone-aware
+            aware_datetime = timezone.make_aware(naive_datetime)
+
+            match.match_date = aware_datetime
             match.save()
             messages.success(request, f"Match date updated for {match.team1.name} vs {match.team2.name}")
+
         except ValueError:
             messages.error(request, "Invalid date format. Please try again.")
 
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
     return redirect('/')
+
+
+def view_tournament_by_code(request):
+    if request.method == "POST":
+        code = request.POST.get("tournament_code").strip().upper()
+
+        try:
+            tournament = Tournament.objects.get(code=code)
+            return redirect("viewTournament", tournament_id=tournament.id)
+        except Tournament.DoesNotExist:
+            messages.error(request, "Invalid tournament code.")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    return redirect("dashboard")
 
 
 

@@ -72,7 +72,9 @@
 
                     <div class="flex flex-col lg:flex-row gap-6 lg:gap-14 mb-20">
                         <a class="btn bg-[#000000] text-white rounded-3xl px-6 border-[#13898B] border-2">Create A New Tournament</a>
-                        <a class="btn bg-[#000000] text-white rounded-3xl px-6 border">Follow A Public Tournament</a>
+                        <label for="add_tournament" class="btn bg-[#000000] text-white rounded-3xl px-6 border cursor-pointer">
+                            Follow A Public Tournament
+                        </label>
                     </div>
                 </div>
 
@@ -185,6 +187,57 @@
         </div>
 
     </footer>
+
+<input type="checkbox" id="add_tournament" class="modal-toggle" {% if messages %}checked{% endif %} />
+<div class="modal backdrop-blur-sm" role="dialog">
+  <div class="modal-box w-11/12 max-w-md bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+
+    <!-- Close icon -->
+    <label for="add_tournament" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <!-- Title -->
+    <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">View Tournament by Code</h2>
+
+    <!-- Form -->
+    <form action="{% url 'view_tournament_by_code' %}" method="post" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Error Messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-500 text-sm font-medium mb-2 text-center">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Input -->
+      <div>
+        <label for="tournament_code" class="block mb-2 text-sm font-medium text-white/80 text-center">Tournament Code</label>
+        <input
+          type="text"
+          id="tournament_code"
+          name="tournament_code"
+          placeholder="Type Tournament Code.."
+          class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg text-center"
+          required
+        >
+      </div>
+
+      <!-- Centered Go Button -->
+      <div class="flex justify-center mt-8">
+        <button
+          type="submit"
+          class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-10 border-none transition duration-200"
+        >
+          Go
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <label class="modal-backdrop" for="add_tournament">Close</label>
+</div>
+
+
 
 </body>
 
