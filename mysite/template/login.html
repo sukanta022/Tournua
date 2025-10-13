@@ -59,9 +59,9 @@
                         <p class="text-white">Create </p>
                         <a href="{% url 'signup' %}" class="text-[#00817D] ml-1">New Account</a>
                     </div>
-                    <div class="flex hidden">
+                    <div class="flex">
                         <p class="text-white">Forget Your</p>
-                        <a href="" class="text-[#00817D] ml-1"> Password?</a>
+                        <label for="forget_password_modal" class="text-[#00817D] ml-1"> Password?</label>
                     </div>
                 </div>
 
@@ -132,6 +132,98 @@
       </div>
       <label class="modal-backdrop" for="verify_modal">Close</label>
     </div>
+
+
+<input type="checkbox" id="forget_password_modal" class="modal-toggle" {% if show_step2 or error %}checked{% endif %} />
+<div class="modal backdrop-blur-sm" role="dialog" {% if show_step2 %}open{% endif %}>
+  <div class="modal-box w-11/12 max-w-md bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+
+    <!-- Close Button -->
+    <label for="forget_password_modal" class="absolute right-4 top-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <!-- Step 1: Email Input -->
+    {% if not show_step2 %}
+    <form action="{% url 'send_otp' %}" method="post" class="space-y-6">
+      {% csrf_token %}
+      <h2 class="text-2xl font-semibold text-center tracking-wide">Forgot Password</h2>
+      <p class="text-center text-gray-300">Enter your registered email</p>
+
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+        class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
+      />
+
+      {% if error %}
+        <p class="text-red-400 text-center">{{ error }}</p>
+      {% endif %}
+
+      <div class="flex justify-center mt-6">
+        <button
+          type="submit"
+          class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-10 border-none transition duration-200"
+        >
+          Send OTP
+        </button>
+      </div>
+    </form>
+    {% endif %}
+
+
+    <!-- Step 2: OTP + New Password -->
+    {% if show_step2 %}
+    <form action="{% url 'reset_password' %}" method="post" class="space-y-5">
+      {% csrf_token %}
+      <h2 class="text-2xl font-semibold text-center tracking-wide">Reset Password</h2>
+      <input type="hidden" name="email" value="{{ email }}">
+
+      <input
+        type="text"
+        name="otp"
+        placeholder="Enter OTP"
+        required
+        class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
+      />
+
+      <input
+        type="password"
+        name="new_password"
+        placeholder="Enter new password"
+        required
+        class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
+      />
+
+      <input
+        type="password"
+        name="confirm_password"
+        placeholder="Confirm password"
+        required
+        class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
+      />
+
+      {% if error %}
+        <p class="text-red-400 text-center">{{ error }}</p>
+      {% endif %}
+
+      <div class="flex justify-center mt-6">
+        <button
+          type="submit"
+          class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-10 border-none transition duration-200"
+        >
+          Reset Password
+        </button>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+
+  <label class="modal-backdrop" for="forget_password_modal">Close</label>
+</div>
+
+
+
 
 </body>
 </html>

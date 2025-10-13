@@ -36,6 +36,14 @@
             <img src="{% static 'images/TournuaLogo.png' %}" alt="">
             <p class="text-6xl text-white font-cs-gelios">Sign Up</p>
             <p class="text-white mb-2">Sign up with email address</p>
+            {% if messages %}
+  {% for message in messages %}
+    <div class="bg-green-100 text-green-700 p-2 rounded mb-2">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
             <!-- Full Name -->
             {% if form.full_name.errors %}
                 <div class="bg-red-100 border border-red-500 text-red-700 px-3 py-1 rounded-lg mb-1 text-[12px]">
@@ -146,6 +154,55 @@
 
   <!-- Close Overlay -->
   <label class="modal-backdrop" for="verify_modal">Close</label>
+</div>
+
+<input type="checkbox" id="add_tournament" class="modal-toggle" {% if request.session.show_modal %} checked {% endif %} />
+<div class="modal backdrop-blur-sm" role="dialog">
+  <div class="modal-box w-11/12 max-w-md bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+
+    <!-- Close icon -->
+    <label for="add_tournament" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <!-- Title -->
+    <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">View Tournament by Code</h2>
+
+    <!-- Form -->
+    <form action="{% url 'verify_code' %}" method="post" class="space-y-6">
+      {% csrf_token %}
+
+      <!-- Error Messages -->
+      {% if messages %}
+        {% for message in messages %}
+          <p class="text-red-500 text-sm font-medium mb-2 text-center">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <!-- Input -->
+      <div>
+        <label for="verification_code" class="block mb-2 text-sm font-medium text-white/80 text-center">Tournament Code</label>
+        <input
+          type="text"
+          id="verification_code"
+          name="verification_code"
+          placeholder="Type verification Code.."
+          class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg text-center"
+          required
+        >
+      </div>
+
+      <!-- Centered Go Button -->
+      <div class="flex justify-center mt-8">
+        <button
+          type="submit"
+          class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-10 border-none transition duration-200"
+        >
+          Go
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <label class="modal-backdrop" for="add_tournament">Close</label>
 </div>
 
  

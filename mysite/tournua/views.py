@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -7,26 +8,174 @@ from django.views.decorators.cache import never_cache
 from django.utils import timezone
 import itertools
 
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+
+
+import random
+
 def signup_save(request):
     if request.method == "POST":
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
+        full_name = request.POST.get("full_name")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        if UserAccount.objects.filter(email=email).exists():
+            messages.error(request, "Email already registered.")
+            request.session['show_modal'] = False  # modal বন্ধ রাখো
+            return redirect("signup")
+
+        verification_code = random.randint(100000, 999999)
+
+
+        try:
+            send_mail(
+                "Your Verification Code - Tournua",
+                f"Hi {full_name},\n\nYour verification code is: {verification_code}\n\nUse this code to complete your signup.\n\nThank you!",
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            print(e)
+            messages.error(request, "Failed to send verification email. Try again later.")
+            request.session['show_modal'] = False
+            return redirect("signup")
+
+        #Store user info + code in session
+        request.session["signup_info"] = {
+            "full_name": full_name,
+            "email": email,
+            "password": password,
+            "verification_code": str(verification_code),
+        }
+
+        #Modal open only for verification
+        request.session['show_modal'] = True
+        messages.success(request, "Verification code sent to your email.")
+        return redirect("signup")
+
+    # GET request
+    return render(request, "signup.html")
+
+def verify_code(request):
+    if request.method == "POST":
+        user_code = request.POST.get("verification_code")
+        session_data = request.session.get("signup_info")
+
+        if not session_data:
+            messages.error(request, "Session expired. Please sign up again.")
+            request.session['show_modal'] = False
+            return redirect("signup")
+
+        correct_code = session_data.get("verification_code")
+
+        if user_code == correct_code:
+            # Create user
+            UserAccount.objects.create(
+                full_name=session_data["full_name"],
+                email=session_data["email"],
+                password=session_data["password"],
+            )
+            del request.session["signup_info"]
+
+            #clear modal flag
+            request.session['show_modal'] = False
             return redirect("login")
-    else:
-        form = SignupForm()
-    return render(request, "signup.html", {"form": form})
+        else:
+            messages.error(request, "Incorrect verification code. Try again.")
+            request.session['show_modal'] = True  # Keep modal open if code wrong
+            return redirect("signup")
 
 
+
+# Step 1: Send OTP
+def send_otp(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        try:
+            user = UserAccount.objects.get(email=email)
+        except UserAccount.DoesNotExist:
+            return render(request, "login.html", {
+                "error": "No account found with this email."
+            })
+
+        # OTP Generate
+        import random
+        otp = str(random.randint(100000, 999999))
+        request.session['reset_email'] = email
+        request.session['reset_otp'] = otp
+
+        # Send Mail
+        from django.core.mail import send_mail
+        from django.conf import settings
+        send_mail(
+            "Your Password Reset OTP",
+            f"Hello {user.full_name},\nYour OTP for password reset is: {otp}",
+            settings.DEFAULT_FROM_EMAIL,
+            [email],
+        )
+
+        # Save flag to session so next load auto shows step2
+        request.session['show_step2'] = True
+
+        return redirect("login_view")
+
+    return redirect("login_view")
+
+def reset_password(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        otp = request.POST.get("otp")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        session_otp = request.session.get("reset_otp")
+        session_email = request.session.get("reset_email")
+
+        if email != session_email:
+            error = "Email mismatch. Try again."
+        elif otp != session_otp:
+            error = "Invalid OTP."
+        elif new_password != confirm_password:
+            error = "Passwords do not match."
+        elif len(new_password) < 8:
+            error = "Password must be at least 8 characters."
+        else:
+            # Update user password (hashing optional)
+            user = UserAccount.objects.get(email=email)
+            user.password = new_password
+            user.save()
+
+            # Clear session
+            del request.session['reset_email']
+            del request.session['reset_otp']
+
+
+            return redirect("login_view")
+
+        # If any error
+        return render(request, "login.html", {
+            "show_step2": True,
+            "email": email,
+            "error": error
+        })
+
+    return redirect("login_view")
 
 
 def login_view(request):
     error = None
+    context = {}
+
+    #Handle normal login
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        # Check if user exists
         user_obj = UserAccount.objects.filter(email=email, password=password).first()
 
         if user_obj:
@@ -35,7 +184,17 @@ def login_view(request):
         else:
             error = "Invalid email or password!"
 
-    return render(request, "login.html", {"error": error})
+    #Handle forgot password modal state
+    if request.session.get("show_step2"):
+        context["show_step2"] = True
+        context["email"] = request.session.get("reset_email")
+        del request.session["show_step2"]  # clear flag so it doesn’t persist
+
+    #Send error (if any)
+    context["error"] = error
+
+    return render(request, "login.html", context)
+
 
 
 

@@ -20,8 +20,10 @@ from . import views
 
 urlpatterns = [
 path("signup/", views.signup_save, name="signup_save"),
-
+path("verify-code/", views.verify_code, name="verify_code"),
 path("login/", views.login_view, name="login_view"),
+path('send-otp/', views.send_otp, name='send_otp'),
+path('reset-password/', views.reset_password, name='reset_password'),
 path("dashboard/", views.dashboard, name="dashboard"),
 path('logout/', views.logout_view, name='logout'),
 path("create-tournament/", views.create_tournament, name="create_tournament"),
