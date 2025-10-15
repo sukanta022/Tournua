@@ -388,7 +388,7 @@ def update_match_score(request):
         match.played = True
         match.save()
 
-        messages.success(request, f"Scores updated for {match.team1.name} vs {match.team2.name}")
+
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
     # If someone tries GET request
@@ -498,7 +498,7 @@ def update_match_date(request):
 
             match.match_date = aware_datetime
             match.save()
-            messages.success(request, f"Match date updated for {match.team1.name} vs {match.team2.name}")
+
 
         except ValueError:
             messages.error(request, "Invalid date format. Please try again.")

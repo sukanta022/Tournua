@@ -102,6 +102,7 @@
                     <!-- Button to open modal -->
                     <label
                         for="add_tournament"
+                        id="add_tournament_btn"
                         class="btn border-2 border-[#13898B] text-white rounded-full w-14 h-14 bg-white/5 flex items-center justify-center transition duration-200 hover:border-[#13C4C6] hover:bg-white/10">
                         <i class="bi bi-plus-lg text-2xl text-gray-400"></i>
                     </label>
@@ -111,7 +112,7 @@
 
                 <!-- Existing Tournaments -->
                 {% for i in tournaments %}
-                    <div class="w-full max-w-lg mx-auto lg:max-w-md bg-white/5 backdrop-blur-md rounded-xl border border-white/20 shadow-xl p-6 lg:p-8 flex flex-col gap-4">
+                    <div class="tournament-card w-full max-w-lg mx-auto lg:max-w-md bg-white/5 backdrop-blur-md rounded-xl border border-white/20 shadow-xl p-6 lg:p-8 flex flex-col gap-4">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
                             <p class="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
                                 {{i.name}}
@@ -408,7 +409,7 @@
                 <label class="w-30">Team 6</label>
                 <input type="text" name="team6" placeholder="Type name..."
                 class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team1_logo" class="file-input file-input-bordered file-input-info w-40" />
+                <input type="file" name="team6_logo" class="file-input file-input-bordered file-input-info w-40" />
             </div>
 
             <div class="flex items-center gap-5">
@@ -420,9 +421,9 @@
 
             <div class="flex items-center gap-5">
                 <label class="w-30">Team 8</label>
-                <input type="text" name="team7" placeholder="Type name..."
+                <input type="text" name="team8" placeholder="Type name..."
                 class="input input-bordered w-full bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" />
-                <input type="file" name="team7_logo" class="file-input file-input-bordered file-input-info w-40" />
+                <input type="file" name="team8_logo" class="file-input file-input-bordered file-input-info w-40" />
             </div>
         </div>
 
@@ -466,7 +467,7 @@
 
       <div class="flex justify-end gap-3 mt-6">
         <label for="add_tournament" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">Cancel</label>
-        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">Add</button>
+        <button type="submit" id="add_new_tournament" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">Add</button>
       </div>
     </form>
   </div>
@@ -478,7 +479,7 @@
   <div class="modal-box w-11/12 max-w-md bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
 
     <!-- Close icon -->
-    <label for="add_tournament" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+    <label for="add_tournament2" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
 
     <!-- Title -->
     <h2 class="text-2xl font-semibold mb-6 text-center tracking-wide">View Tournament by Code</h2>
@@ -496,7 +497,7 @@
 
       <!-- Input -->
       <div>
-        <label for="tournament_code" class="block mb-2 text-sm font-medium text-white/80 text-center">Tournament Code</label>
+        <label for="tournament_code2" class="block mb-2 text-sm font-medium text-white/80 text-center">Tournament Code</label>
         <input
           type="text"
           id="tournament_code2"
@@ -511,6 +512,7 @@
       <div class="flex justify-center mt-8">
         <button
           type="submit"
+          id="go_button"
           class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-10 border-none transition duration-200"
         >
           Go
@@ -519,7 +521,7 @@
     </form>
   </div>
 
-  <label class="modal-backdrop" for="add_tournament2">Close</label>
+  <label class="modal-backdrop2" for="add_tournament2">Close</label>
 </div>
 
 

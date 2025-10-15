@@ -23,7 +23,7 @@
   <div class="navbar shadow-sm px-4 py-4 lg:px-8 lg:py-6 flex justify-between items-center">
     <a class="btn btn-ghost text-2xl lg:text-3xl text-white font-cs-gelios">Tournua</a>
     <div class="hidden lg:flex gap-8 text-white font-medium">
-      <a href="#">Home</a>
+      <a href="{% url 'dashboard' %}">Home</a>
       <a href="#">Tournament</a>
       <a href="#">About us</a>
     </div>
@@ -57,7 +57,7 @@
       <button class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
         Matches
       </button>
-      <a href="{% url 'leaderboard' tournament.id %}" class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
+      <a href="{% url 'leaderboard' tournament.id %}" id="tournament-leaderboard" class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
         Leaderboard
       </a>
     </div>
@@ -65,7 +65,7 @@
     <!-- Match Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {% for match in matches %}
-      <div class="bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
+      <div id="match-{{ forloop.counter}}" class="match bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
 
         <!-- Match Header -->
         <p class="text-white text-center text-lg font-semibold mb-5">
@@ -135,7 +135,7 @@
         <div class="flex justify-center gap-4">
           {% if not match.match_date %}
           <label for="date_modal"
-            class="btn bg-[#0f6c6d] hover:bg-[#13898B] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
+            class="date-btn btn bg-[#0f6c6d] hover:bg-[#13898B] text-white rounded-3xl px-6 py-2 border-none shadow-md transition duration-200"
             onclick="openDateModal('{{ match.id }}')">
             Set Date
           </label>
@@ -223,7 +223,7 @@
         <label for="date_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
           Cancel
         </label>
-        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
+        <button type="submit" class="date-save-btn btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
           Save
         </button>
       </div>
