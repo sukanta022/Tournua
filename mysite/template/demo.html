@@ -524,7 +524,30 @@
   <label class="modal-backdrop2" for="add_tournament2">Close</label>
 </div>
 
+{% if show_deleted_modal or show_created_modal %}
+  <!-- Tournament Deleted Modal -->
+  <input type="checkbox" id="tournament_deleted_modal" class="modal-toggle" checked />
+  <div class="modal backdrop-blur-sm">
+    <div class="modal-box bg-white/5 text-white border border-white/20 rounded-2xl shadow-2xl p-6 sm:p-8">
+      <div class="flex flex-col items-center gap-4">
+        <!-- Success Icon -->
+        <div class="flex items-center justify-center">
+            <p class="text-green-600 text-4xl"><i class="bi bi-check-circle-fill "></i></p>
+        </div>
+        {% if show_deleted_modal %}
+          <h3 class="font-bold text-lg">Tournament Deleted Successfully</h3>
+        {% elif show_created_modal %}
+          <h3 class="font-bold text-lg">Tournament Created Successfully</h3>
+        {% endif %}
 
+        <!-- OK Button -->
+        <label for="tournament_deleted_modal" class="btn bg-green-400 hover:bg-green-700 text-white rounded-lg px-6 py-2 mt-4">
+          OK
+        </label>
+      </div>
+    </div>
+  </div>
+{% endif %}
 <script>
   // Page Navigation
   const page1 = document.getElementById("page1");

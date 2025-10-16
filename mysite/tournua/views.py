@@ -218,10 +218,15 @@ def dashboard(request):
     tournaments = own_tournaments | joined_tournaments
     tournaments = tournaments.order_by('-created_at')
 
+    show_deleted_modal = request.session.pop('tournament_deleted', False)
+    show_created_modal = request.session.pop('tournament_created', False)
+
     return render(request, "demo.html", {
         "name": name,
         "tournaments": tournaments,
-        "user": user
+        "user": user,
+        'show_deleted_modal': show_deleted_modal,
+        'show_created_modal': show_created_modal,
     })
 
 def join_tournament(request):
@@ -310,6 +315,7 @@ def create_tournament(request):
             num_matches = generate_league_fixtures(tournament)
             print(f"{num_matches} matches created for tournament '{tournament.name}'")
 
+        request.session['tournament_created'] = True
         return redirect("dashboard")  # redirect after success
 
     return render(request, "tournament_form.html")
@@ -536,6 +542,18 @@ def view_tournament_by_code(request):
             messages.error(request, "Invalid tournament code.")
             return redirect(request.META.get("HTTP_REFERER", "/"))
 
+    return redirect("dashboard")
+
+
+
+def delete_tournament(request, tournament_id):
+
+
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+
+
+    tournament.delete()
+    request.session['tournament_deleted'] = True
     return redirect("dashboard")
 
 
