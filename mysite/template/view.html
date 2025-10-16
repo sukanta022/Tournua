@@ -63,13 +63,32 @@
     </div>
 
     <!-- Match Cards -->
+    <!-- Search Bar -->
+<div class="w-full sm:w-1/3 mx-auto mt-6">
+  <form method="get" action="" class="flex items-center gap-3">
+    <input
+    type="text"
+    name="q"
+    placeholder="Search team name..."
+    value="{{ query|default:'' }}"
+    class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
+    oninput="if(this.value === '') this.form.submit()" />
+    <button type="submit"
+            class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white border-none rounded-lg px-6">
+      <i class="bi bi-search"></i>
+    </button>
+  </form>
+</div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {% for match in matches %}
+
+
       <div id="match-{{ forloop.counter}}" class="match bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
 
         <!-- Match Header -->
         <p class="text-white text-center text-lg font-semibold mb-5">
-          Match {{ forloop.counter }}
+          Match {{ match.display_number }}
         </p>
 
         <!-- Teams + Scores -->

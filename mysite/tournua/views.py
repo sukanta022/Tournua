@@ -7,6 +7,8 @@ from .forms import SignupForm
 from django.views.decorators.cache import never_cache
 from django.utils import timezone
 import itertools
+from django.db.models import Q
+from django.db import models
 
 
 from django.core.mail import send_mail
@@ -333,7 +335,6 @@ def generate_league_fixtures(tournament):
 
 
 def tournament_view(request, tournament_id):
-    # Try to get logged in user, if exists
     user = None
     user_id = request.session.get("user_id")
     if user_id:
@@ -345,16 +346,32 @@ def tournament_view(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     matches = Match.objects.filter(tournament=tournament).select_related('team1', 'team2').order_by('created_at')
 
-    # Check if current user is the creator (only if logged in)
+    # ✅ assign permanent display number before filtering
+    all_matches = list(matches)
+    for idx, match in enumerate(all_matches, start=1):
+        match.display_number = idx  # virtual field (not in DB)
+
+    # ✅ search logic
+    query = request.GET.get('q', '').strip()
+    if query:
+        filtered_matches = [
+            m for m in all_matches
+            if query.lower() in m.team1.name.lower() or query.lower() in m.team2.name.lower()
+        ]
+    else:
+        filtered_matches = all_matches
+
     is_creator = user and tournament.user == user
 
     context = {
         'tournament': tournament,
-        'matches': matches,
+        'matches': filtered_matches,
         'user': user,
-        'is_creator': is_creator
+        'is_creator': is_creator,
+        'query': query,
     }
     return render(request, 'view.html', context)
+
 
 
 
