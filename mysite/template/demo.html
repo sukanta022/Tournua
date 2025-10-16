@@ -524,7 +524,7 @@
   <label class="modal-backdrop2" for="add_tournament2">Close</label>
 </div>
 
-{% if show_deleted_modal or show_created_modal %}
+{% if show_deleted_modal or show_created_modal or show_remove_modal %}
   <!-- Tournament Deleted Modal -->
   <input type="checkbox" id="tournament_deleted_modal" class="modal-toggle" checked />
   <div class="modal backdrop-blur-sm">
@@ -538,6 +538,8 @@
           <h3 class="font-bold text-lg">Tournament Deleted Successfully</h3>
         {% elif show_created_modal %}
           <h3 class="font-bold text-lg">Tournament Created Successfully</h3>
+          {% elif show_remove_modal %}
+            <h3 class="font-bold text-lg">Tournament Remove Successfully</h3>
         {% endif %}
 
         <!-- OK Button -->

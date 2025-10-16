@@ -220,6 +220,7 @@ def dashboard(request):
 
     show_deleted_modal = request.session.pop('tournament_deleted', False)
     show_created_modal = request.session.pop('tournament_created', False)
+    show_remove_modal = request.session.pop('participant_removed', False)
 
     return render(request, "demo.html", {
         "name": name,
@@ -227,6 +228,7 @@ def dashboard(request):
         "user": user,
         'show_deleted_modal': show_deleted_modal,
         'show_created_modal': show_created_modal,
+        'show_remove_modal' : show_remove_modal,
     })
 
 def join_tournament(request):
@@ -547,15 +549,25 @@ def view_tournament_by_code(request):
 
 
 def delete_tournament(request, tournament_id):
-
-
     tournament = get_object_or_404(Tournament, id=tournament_id)
-
-
     tournament.delete()
     request.session['tournament_deleted'] = True
     return redirect("dashboard")
 
+def remove_participant(request, tournament_id):
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return redirect("login")
+
+    user = get_object_or_404(UserAccount, id=user_id)
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+
+    if user in tournament.participants.all():
+        tournament.participants.remove(user)
+        # set session flag to show success modal
+        request.session['participant_removed'] = True
+
+    return redirect("dashboard")
 
 
 

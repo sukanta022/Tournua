@@ -34,4 +34,5 @@ path('update_match_date/', views.update_match_date, name='update_match_date'),
 path('join-tournament/', views.join_tournament, name='join_tournament'),
 path("view-by-code/", views.view_tournament_by_code, name="view_tournament_by_code"),
 path('tournament/<int:tournament_id>/delete/', views.delete_tournament, name='delete_tournament'),
+path('tournament/<int:tournament_id>/remove/', views.remove_participant, name='remove_participant'),
 ]
