@@ -303,42 +303,57 @@ def create_tournament(request):
             teams_per_group=teams_per_group,
         )
 
-        # Save teams
-        for i in range(1, 9):  # 8 teams
-            team_name = request.POST.get(f"team{i}")
-            team_logo = request.FILES.get(f"team{i}_logo")
-            if team_name:  # only save if team entered
-                Team.objects.create(
-                    tournament=tournament,
-                    name=team_name,
-                    logo=team_logo
-                )
-        if format_choice.lower() == "league":
-            num_matches = generate_league_fixtures(tournament)
-            print(f"{num_matches} matches created for tournament '{tournament.name}'")
+
+
 
         request.session['tournament_created'] = True
         return redirect("dashboard")  # redirect after success
 
     return render(request, "tournament_form.html")
 
+def add_teams(request, tournament_id):
+    tournament = get_object_or_404(Tournament, id=tournament_id)
+
+    if request.method == "POST":
+        num_teams = tournament.teams_per_group
+
+        for i in range(1, num_teams + 1):
+            name = request.POST.get(f"team{i}")
+            logo = request.FILES.get(f"team{i}_logo")
+
+            if name:
+                Team.objects.create(
+                    tournament=tournament,
+                    name=name,
+                    logo=logo
+                )
+
+        # Generate matches if format = League
+        if tournament.format.lower() == "league":
+            num_matches = generate_league_fixtures(tournament)
+            print(f"{num_matches} matches created for tournament '{tournament.name}'")
+
+        return redirect("viewTournament", tournament_id=tournament.id)
+
+    return redirect("viewTournament", tournament_id=tournament.id)
 
 def generate_league_fixtures(tournament):
+    import itertools
     teams = list(tournament.teams.all())
 
     # Clear previous matches if any
     tournament.matches.all().delete()
 
     fixtures = []
-    # Generate all possible pairs of teams
+    # Generate all possible pairs of teams (home and away)
     for team1, team2 in itertools.combinations(teams, 2):
-        # Each pair plays twice (home & away)
         fixtures.append(Match(tournament=tournament, team1=team1, team2=team2))
         fixtures.append(Match(tournament=tournament, team1=team2, team2=team1))
 
     # Bulk create all matches in DB
     Match.objects.bulk_create(fixtures)
-    return f"{len(fixtures)} matches created for tournament '{tournament.name}'"
+    return len(fixtures)
+
 
 
 
@@ -370,13 +385,14 @@ def tournament_view(request, tournament_id):
         filtered_matches = all_matches
 
     is_creator = user and tournament.user == user
-
+    teams_count = tournament.teams.count()
     context = {
         'tournament': tournament,
         'matches': filtered_matches,
         'user': user,
         'is_creator': is_creator,
         'query': query,
+        'teams_count' : teams_count,
     }
     return render(request, 'view.html', context)
 

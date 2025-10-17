@@ -55,9 +55,20 @@
 
       {% if is_creator %}
         <!-- Delete Button -->
-        <label for="delete_tournament_modal" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
+        <div class="flex flex-col gap-3">
+          <label for="delete_tournament_modal" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
           <i class="bi bi-trash3"></i> Delete Tournament
-        </label>
+          </label>
+          {% if teams_count >= tournament.teams_per_group %}
+            <button class="btn bg-gray-600 text-white cursor-not-allowed" disabled>
+              Add Teams (Max Reached)
+            </button>
+          {% else %}
+            <label for="add_teams_modal" class="btn bg-[#13898B] text-white cursor-pointer">
+              Add Teams
+            </label>
+          {% endif %}
+        </div>
       {% endif %}
       {% if user in tournament.participants.all %}
         <label for="remove_participant_modal" class="btn bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
@@ -305,6 +316,26 @@
     </div>
   </div>
 
+<input type="checkbox" id="add_teams_modal" class="modal-toggle" />
+<div class="modal backdrop-blur-sm">
+  <div class="modal-box max-w-3xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+    <label for="add_teams_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
+
+    <h2 class="text-2xl font-semibold mb-6 text-center">Add Teams</h2>
+
+    <form action="{% url 'add_teams' tournament.id %}" method="post" enctype="multipart/form-data" id="add_teams_form" class="space-y-5">
+      {% csrf_token %}
+      <div id="team_fields_container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <label for="add_teams_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">Cancel</label>
+        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">Save Teams</button>
+      </div>
+    </form>
+  </div>
+  <label class="modal-backdrop" for="add_teams_modal">Close</label>
+</div>
+
 
 <!-- JS -->
 <script>
@@ -321,6 +352,25 @@ function openModal(matchId, team1, team2, team1Score, team2Score) {
 function openDateModal(matchId) {
   document.getElementById("modal_date_match_id").value = matchId;
 }
+
+  document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("team_fields_container");
+  const totalTeams = {{ tournament.teams_per_group }}; // comes from DB
+
+  for (let i = 1; i <= totalTeams; i++) {
+    const teamField = document.createElement("div");
+    teamField.className = "bg-white/10 border border-white/20 rounded-2xl p-4";
+
+    teamField.innerHTML = `
+      <label class="block text-white mb-2">Team ${i} Name</label>
+      <input type="text" name="team${i}" placeholder="Enter team name" class="input input-bordered w-full mb-3 bg-white/20 text-white" required>
+      <label class="block text-white mb-2">Team ${i} Logo</label>
+      <input type="file" name="team${i}_logo" accept="image/*" class="file-input file-input-bordered w-full bg-white/20 text-white">
+    `;
+
+    container.appendChild(teamField);
+  }
+});
 </script>
 
 </body>

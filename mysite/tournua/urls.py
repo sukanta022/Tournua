@@ -35,4 +35,5 @@ path('join-tournament/', views.join_tournament, name='join_tournament'),
 path("view-by-code/", views.view_tournament_by_code, name="view_tournament_by_code"),
 path('tournament/<int:tournament_id>/delete/', views.delete_tournament, name='delete_tournament'),
 path('tournament/<int:tournament_id>/remove/', views.remove_participant, name='remove_participant'),
+path("tournament/<int:tournament_id>/add-teams/", views.add_teams, name="add_teams"),
 ]
