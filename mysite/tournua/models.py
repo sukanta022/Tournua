@@ -16,11 +16,17 @@ class UserAccount(models.Model):
 
 
 class Tournament(models.Model):
+    TROPHY_CHOICES = [
+        ("Trophy1.png", "Golden Cup"),
+        ("Trophy2.png", "Silver Cup"),
+        ("Trophy3.png", "Bronze Cup"),
+        ("Trophy4.png", "Bronze Cup"),
+    ]
     user = models.ForeignKey(UserAccount, on_delete=models.CASCADE, related_name="tournaments")
     code = models.CharField(max_length=8, unique=True, editable=False)
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    trophy = models.ImageField(upload_to="trophies/", blank=True, null=True)
+    trophy = models.CharField(max_length=20, choices=TROPHY_CHOICES, blank=True, null=True)
     tournament_type = models.CharField(max_length=50, choices=[("online", "Online"), ("offline", "Offline")])
     player_type = models.CharField(max_length=50, choices=[("single", "Single"), ("team", "Team")])
     format = models.CharField(max_length=50, choices=[("Knockout", "Knockout"), ("League", "League")])

@@ -117,7 +117,11 @@
                             <p class="text-white text-lg sm:text-xl lg:text-2xl font-semibold">
                                 {{i.name}}
                             </p>
-                            <img src="{% static 'trophies/Trophy1.png' %}" alt="Trophy" class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain mx-auto sm:mx-0 lg:scale-120">
+                            {% if i.trophy %}
+                                <img src="{% static 'trophies/'|add:i.trophy %}" alt="Trophy" class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain mx-auto sm:mx-0 lg:scale-120">
+                            {% else %}
+                                <img src="{% static 'trophies/Trophy1.png' %}" alt="Trophy" class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 object-contain mx-auto sm:mx-0 lg:scale-120">
+                            {% endif %}
                         </div>
 
                         <p class="text-white/80 text-sm sm:text-base">

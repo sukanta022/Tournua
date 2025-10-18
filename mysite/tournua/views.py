@@ -283,7 +283,7 @@ def create_tournament(request):
         user = UserAccount.objects.get(id=user_id)
         name = request.POST.get("tournament_name")
         description = request.POST.get("tournament_descriptions")
-        trophy = request.POST.get("trophy")  # you’ll need to update HTML to allow trophy upload
+        trophy = request.POST.get("trophy")
         t_type = request.POST.get("select_type")
         player_type = request.POST.get("player_type")
         format_choice = request.POST.get("format")
