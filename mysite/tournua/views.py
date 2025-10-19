@@ -221,6 +221,8 @@ def dashboard(request):
     show_deleted_modal = request.session.pop('tournament_deleted', False)
     show_created_modal = request.session.pop('tournament_created', False)
     show_remove_modal = request.session.pop('participant_removed', False)
+    show_join_modal = request.session.pop('tournament_joined', False)
+    request.session['tournament_joined'] = True
 
     return render(request, "demo.html", {
         "name": name,
@@ -229,6 +231,7 @@ def dashboard(request):
         'show_deleted_modal': show_deleted_modal,
         'show_created_modal': show_created_modal,
         'show_remove_modal' : show_remove_modal,
+        'show_join_modal' : show_join_modal,
     })
 
 def join_tournament(request):
@@ -250,6 +253,7 @@ def join_tournament(request):
                 error = "You already joined this tournament."
             else:
                 tournament.participants.add(user)
+                request.session['tournament_joined'] = True
                 return redirect("dashboard")  # success
 
         except Tournament.DoesNotExist:
@@ -287,7 +291,6 @@ def create_tournament(request):
         t_type = request.POST.get("select_type")
         player_type = request.POST.get("player_type")
         format_choice = request.POST.get("format")
-        groups = request.POST.get("select_group")
         teams_per_group = request.POST.get("team_num")
 
         # Save tournament
@@ -299,12 +302,8 @@ def create_tournament(request):
             tournament_type=t_type,
             player_type=player_type,
             format=format_choice,
-            num_groups=groups,
             teams_per_group=teams_per_group,
         )
-
-
-
 
         request.session['tournament_created'] = True
         return redirect("dashboard")  # redirect after success
