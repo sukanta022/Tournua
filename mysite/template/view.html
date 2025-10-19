@@ -114,7 +114,7 @@
       {% for match in matches %}
 
 
-      <div id="match-{{ forloop.counter}}" class="match bg-white/5 backdrop-blur-md rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
+      <div id="match-{{ forloop.counter}}" class="match bg-white/5 backdrop-blur-md  rounded-2xl border border-white/20 p-6 hover:scale-[1.02] hover:bg-white/20 transition duration-300 shadow-lg hover:border-[#13898B]">
 
         <!-- Match Header -->
         <p class="text-white text-center text-lg font-semibold mb-5">
@@ -126,7 +126,7 @@
 
           <!-- Team 1 -->
           <div class="flex flex-col items-center justify-center space-y-2">
-            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+            <img src="{% static match.team1.logo %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
             <div class="flex items-center justify-center">
               {% if match.played %}
                 {% if match.team1_score > match.team2_score %}
@@ -160,7 +160,7 @@
 
           <!-- Team 2 -->
           <div class="flex flex-col items-center justify-center space-y-2">
-            <img src="{% static 'trophies/Logo1.png' %}" alt="Team 2 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
+            <img src="{% static match.team2.logo %}" alt="Team 1 Logo" class="w-16 h-16 sm:w-20 sm:h-20">
             <div class="flex items-center justify-center">
               <p class="text-lg sm:text-xl text-white font-semibold text-center">{{ match.team2.name }}</p>
               {% if match.played %}
@@ -323,22 +323,32 @@
 <input type="checkbox" id="add_teams_modal" class="modal-toggle" />
 <div class="modal backdrop-blur-sm">
   <div class="modal-box max-w-3xl w-11/12 bg-white/10 text-white rounded-2xl border border-white/20 shadow-2xl relative p-6 sm:p-8">
+
+    <!-- Close Button -->
     <label for="add_teams_modal" class="absolute top-4 right-4 text-gray-300 hover:text-white cursor-pointer text-2xl">✕</label>
 
+    <!-- Title -->
     <h2 class="text-2xl font-semibold mb-6 text-center">Add Teams</h2>
 
-    <form action="{% url 'add_teams' tournament.id %}" method="post" enctype="multipart/form-data" id="add_teams_form" class="space-y-5">
+    <!-- Form -->
+    <form action="{% url 'add_teams' tournament.id %}" method="post" id="add_teams_form" class="space-y-5">
       {% csrf_token %}
       <div id="team_fields_container" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
 
+      <!-- Buttons -->
       <div class="flex justify-end gap-3 mt-6">
-        <label for="add_teams_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">Cancel</label>
-        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">Save Teams</button>
+        <label for="add_teams_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
+          Cancel
+        </label>
+        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
+          Save Teams
+        </button>
       </div>
     </form>
   </div>
   <label class="modal-backdrop" for="add_teams_modal">Close</label>
 </div>
+
 
 
 <!-- JS -->
@@ -359,17 +369,16 @@ function openDateModal(matchId) {
 
   document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("team_fields_container");
-  const totalTeams = {{ tournament.teams_per_group }}; // comes from DB
+  const totalTeams = {{ tournament.teams_per_group }}; // value from DB
 
   for (let i = 1; i <= totalTeams; i++) {
     const teamField = document.createElement("div");
-    teamField.className = "bg-white/10 border border-white/20 rounded-2xl p-4";
+    teamField.className = "bg-white/10 border border-white/20 rounded-2xl p-4 transition hover:bg-white/20";
 
     teamField.innerHTML = `
-      <label class="block text-white mb-2">Team ${i} Name</label>
-      <input type="text" name="team${i}" placeholder="Enter team name" class="input input-bordered w-full mb-3 bg-white/20 text-white" required>
-      <label class="block text-white mb-2">Team ${i} Logo</label>
-      <input type="file" name="team${i}_logo" accept="image/*" class="file-input file-input-bordered w-full bg-white/20 text-white">
+      <label class="block text-white mb-2 font-medium">Team ${i} Name</label>
+      <input type="text" name="team${i}" placeholder="Enter team name"
+        class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#13C4C6]" required>
     `;
 
     container.appendChild(teamField);

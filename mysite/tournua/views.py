@@ -311,6 +311,7 @@ def create_tournament(request):
 
     return render(request, "tournament_form.html")
 
+
 def add_teams(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
 
@@ -319,13 +320,14 @@ def add_teams(request, tournament_id):
 
         for i in range(1, num_teams + 1):
             name = request.POST.get(f"team{i}")
-            logo = request.FILES.get(f"team{i}_logo")
 
             if name:
+                logo_filename = f"logo/Logo{i}.png"
+
                 Team.objects.create(
                     tournament=tournament,
                     name=name,
-                    logo=logo
+                    logo=logo_filename  # set static path
                 )
 
         # Generate matches if format = League
@@ -334,9 +336,6 @@ def add_teams(request, tournament_id):
             print(f"{num_matches} matches created for tournament '{tournament.name}'")
 
         return redirect("viewTournament", tournament_id=tournament.id)
-
-    return redirect("viewTournament", tournament_id=tournament.id)
-
 def generate_league_fixtures(tournament):
     import itertools
     teams = list(tournament.teams.all())

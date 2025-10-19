@@ -62,50 +62,59 @@
       </button>
     </div>
 
-    <!-- Leaderboard Table -->
-    <div class="mt-10 overflow-x-auto">
-      <div class="min-w-[600px] bg-black rounded-lg py-3 px-4 text-white">
+  <!-- Leaderboard Table -->
+<div class="mt-10 overflow-x-auto">
+  <div class="min-w-[600px] bg-black rounded-lg py-3 px-4 text-white">
 
-        <!-- Table Header -->
-        <div class="flex justify-between font-semibold text-sm sm:text-base mb-2">
-          <div class="flex gap-4 sm:gap-6 min-w-[150px]">
-            <p>P</p>
-            <p>Team</p>
-          </div>
-          <div class="flex gap-3 sm:gap-4">
-            <p class="w-8 text-center">MP</p>
-            <p class="w-8 text-center">W</p>
-            <p class="w-8 text-center">D</p>
-            <p class="w-8 text-center">L</p>
-            <p class="w-8 text-center">GS</p>
-            <p class="w-8 text-center">GC</p>
-            <p class="w-10 text-center">Pts</p>
-          </div>
-        </div>
-
-        <!-- Table Rows -->
-        {% for row in leaderboard %}
-        <div class="flex justify-between items-center border-t border-white/20 py-2 text-sm sm:text-base">
-          <div class="flex gap-4 sm:gap-6 min-w-[150px]">
-            <p>{{ row.P }}</p>
-            <p class="font-medium truncate max-w-[100px] sm:max-w-[150px]">{{ row.team.name }}</p>
-          </div>
-          <div class="flex gap-3 sm:gap-4">
-            <p class="w-8 text-center">{{ row.MP }}</p>
-            <p class="w-8 text-center">{{ row.W }}</p>
-            <p class="w-8 text-center">{{ row.D }}</p>
-            <p class="w-8 text-center">{{ row.L }}</p>
-            <p class="w-8 text-center">{{ row.GS }}</p>
-            <p class="w-8 text-center">{{ row.GC }}</p>
-            <p class="w-10 text-center font-bold text-[#14D5D4]">{{ row.Pts }}</p>
-          </div>
-        </div>
-        {% empty %}
-        <p class="text-center py-4 text-white/70">No leaderboard data available.</p>
-        {% endfor %}
-
+    <!-- Table Header -->
+    <div class="flex justify-between font-semibold text-sm sm:text-base mb-2">
+      <div class="flex gap-13 sm:gap-6 min-w-[150px]">
+        <p class="w-7 text-center" >P</p>
+        <p class="w-8 text-center">Teams</p>
+      </div>
+      <div class="flex gap-3 sm:gap-4">
+        <p class="w-8 text-center">MP</p>
+        <p class="w-8 text-center">W</p>
+        <p class="w-8 text-center">D</p>
+        <p class="w-8 text-center">L</p>
+        <p class="w-8 text-center">GS</p>
+        <p class="w-8 text-center">GC</p>
+        <p class="w-10 text-center">Pts</p>
       </div>
     </div>
+
+    <!-- Table Rows -->
+    {% for row in leaderboard %}
+    <div class="flex justify-between items-center border-t border-white/20 py-2 text-sm sm:text-base">
+      <div class="flex gap-4 sm:gap-6 min-w-[150px] items-center">
+        <p class="w-5 text-center">{{ row.P }}</p>
+
+        <!-- Team + Logo (aligned perfectly) -->
+        <div class="flex items-center gap-3 min-w-[180px]">
+          <p class="font-medium truncate w-[70px] sm:w-[70px] w-8 text-center">{{ row.team.name }}</p>
+          <div class="w-10 flex justify-center w-8 text-center">
+            <img src="{% static row.team.logo %}" alt="{{ row.team.name }} Logo"
+                 class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-white/20 object-cover">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 sm:gap-4">
+        <p class="w-8 text-center">{{ row.MP }}</p>
+        <p class="w-8 text-center">{{ row.W }}</p>
+        <p class="w-8 text-center">{{ row.D }}</p>
+        <p class="w-8 text-center">{{ row.L }}</p>
+        <p class="w-8 text-center">{{ row.GS }}</p>
+        <p class="w-8 text-center">{{ row.GC }}</p>
+        <p class="w-10 text-center font-bold text-[#14D5D4]">{{ row.Pts }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-center py-4 text-white/70">No leaderboard data available.</p>
+    {% endfor %}
+  </div>
+</div>
+
 
   </div>
 </main>

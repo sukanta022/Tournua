@@ -56,7 +56,7 @@ class Tournament(models.Model):
 class Team(models.Model):
     tournament = models.ForeignKey(Tournament, on_delete=models.CASCADE, related_name="teams")
     name = models.CharField(max_length=200)
-    logo = models.ImageField(upload_to="team_logos/", blank=True, null=True)
+    logo = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.name
