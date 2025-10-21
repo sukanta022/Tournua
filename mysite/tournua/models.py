@@ -30,7 +30,7 @@ class Tournament(models.Model):
     tournament_type = models.CharField(max_length=50, choices=[("online", "Online"), ("offline", "Offline")])
     player_type = models.CharField(max_length=50, choices=[("single", "Single"), ("team", "Team")])
     format = models.CharField(max_length=50, choices=[("Knockout", "Knockout"), ("League", "League")])
-    num_groups = models.IntegerField(default=2)
+    num_groups = models.IntegerField(default=1)
     teams_per_group = models.IntegerField(default=4)
     created_at = models.DateTimeField(auto_now_add=True)
     participants = models.ManyToManyField(UserAccount, related_name="joined_tournaments", blank=True)

@@ -60,7 +60,7 @@
       {% if is_creator %}
         <!-- Delete Button -->
         <div class="flex flex-col gap-3">
-          <label for="delete_tournament_modal" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
+          <label for="delete_tournament_modal" id="delete_tournament" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg px-4 py-2 flex items-center gap-2 cursor-pointer">
           <i class="bi bi-trash3"></i> Delete Tournament
           </label>
           {% if teams_count >= tournament.teams_per_group %}
@@ -68,7 +68,7 @@
               Add Teams (Max Reached)
             </button>
           {% else %}
-            <label for="add_teams_modal" class="btn bg-[#13898B] text-white cursor-pointer">
+            <label for="add_teams_modal" id="add_teams" class="btn bg-[#13898B] text-white cursor-pointer">
               Add Teams
             </label>
           {% endif %}
@@ -84,7 +84,7 @@
 
     <!-- Toggle Buttons -->
     <div class="w-full flex rounded-3xl border-2 border-[#13898B] overflow-hidden text-white bg-black/70 backdrop-blur-md mt-6">
-      <button class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
+      <button id="fixture" class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
         Matches
       </button>
       <a href="{% url 'leaderboard' tournament.id %}" id="tournament-leaderboard" class="w-1/2 py-2.5 font-medium text-center transition-all duration-200 hover:bg-[#13898B]/30 focus:bg-[#13898B] focus:text-white">
@@ -103,7 +103,7 @@
           value="{{ query|default:'' }}"
           class="input input-bordered w-full bg-white/20 text-white placeholder-gray-300 focus:outline-none focus:border-[#13898B] border-white/30 rounded-lg"
           oninput="if(this.value === '') this.form.submit()" />
-          <button type="submit"
+          <button type="submit" id="team_search"
                   class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white border-none rounded-lg px-6">
             <i class="bi bi-search"></i>
           </button>
@@ -299,7 +299,7 @@
         <!-- Confirm Delete -->
         <form action="{% url 'delete_tournament' tournament.id %}" method="POST">
           {% csrf_token %}
-          <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg">Yes, Delete</button>
+          <button type="submit" id="delete_confirmation" class="btn bg-red-600 hover:bg-red-700 text-white rounded-lg">Yes, Delete</button>
         </form>
       </div>
     </div>
@@ -344,7 +344,7 @@
         <label for="add_teams_modal" class="btn bg-gray-600/40 hover:bg-gray-500 text-white rounded-3xl px-6 border-none transition">
           Cancel
         </label>
-        <button type="submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
+        <button type="submit" id="team_submit" class="btn bg-[#13898B] hover:bg-[#0f6c6d] text-white rounded-3xl px-8 border-none transition">
           Save Teams
         </button>
       </div>
@@ -365,6 +365,10 @@ function openModal(matchId, team1, team2, team1Score, team2Score) {
   document.getElementById("team2_score").placeholder = `Enter ${team2} Score`;
   document.getElementById("team1_score").value = team1Score || "";
   document.getElementById("team2_score").value = team2Score || "";
+}
+
+function openDateModal(matchId) {
+  document.getElementById("modal_date_match_id").value = matchId;
 }
 
 document.addEventListener("DOMContentLoaded", () => {

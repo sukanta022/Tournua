@@ -74,7 +74,7 @@
                         <button class="btn bg-[#000000] text-white rounded-3xl px-6 border-[#13898B] border-2">
                             <label for="verify_modal" class="text-[#00bfa5] cursor-pointer">Create A New Tournament</label>
                         </button>
-                        <label for="add_tournament2" class="btn bg-[#000000] text-white rounded-3xl px-6 border cursor-pointer">
+                        <label for="add_tournament2" class="btn bg-[#000000] text-white rounded-3xl px-6 border cursor-pointer" id="tournament_add">
                             Follow A Public Tournament
                         </label>
                     </div>
@@ -317,7 +317,7 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium mb-2">Teams per Group</label>
+          <label class="block text-sm font-medium mb-2">No. of Teams</label>
           <select name="team_num" id="team_num"
             class="select select-bordered w-1/3 bg-white/40 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-[#14D5D4]" required>
             <option value="">Select</option>
@@ -469,7 +469,7 @@
         {% endif %}
 
         <!-- OK Button -->
-        <label for="tournament_deleted_modal" class="btn bg-green-400 hover:bg-green-700 text-white rounded-lg px-6 py-2 mt-4">
+        <label for="tournament_deleted_modal" id="confirmation_ok" class="btn bg-green-400 hover:bg-green-700 text-white rounded-lg px-6 py-2 mt-4">
           OK
         </label>
       </div>

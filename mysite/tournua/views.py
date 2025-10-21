@@ -6,17 +6,14 @@ from .models import UserAccount, Tournament, Team, Match
 from .forms import SignupForm
 from django.views.decorators.cache import never_cache
 from django.utils import timezone
+from datetime import datetime
 import itertools
 from django.db.models import Q
 from django.db import models
-
-
 from django.core.mail import send_mail
 from django.conf import settings
-
-
-
 import random
+
 
 def signup_save(request):
     if request.method == "POST":
@@ -26,7 +23,7 @@ def signup_save(request):
 
         if UserAccount.objects.filter(email=email).exists():
             messages.error(request, "Email already registered.")
-            request.session['show_modal'] = False  # modal বন্ধ রাখো
+            request.session['show_modal'] = False
             return redirect("signup")
 
         verification_code = random.randint(100000, 999999)
@@ -40,6 +37,7 @@ def signup_save(request):
                 [email],
                 fail_silently=False,
             )
+
         except Exception as e:
             print(e)
             messages.error(request, "Failed to send verification email. Try again later.")
@@ -127,6 +125,7 @@ def send_otp(request):
         return redirect("login_view")
 
     return redirect("login_view")
+
 
 def reset_password(request):
     if request.method == "POST":
@@ -234,6 +233,7 @@ def dashboard(request):
         'show_join_modal' : show_join_modal,
     })
 
+
 def join_tournament(request):
     user_id = request.session.get("user_id")
     if not user_id:
@@ -335,8 +335,9 @@ def add_teams(request, tournament_id):
             print(f"{num_matches} matches created for tournament '{tournament.name}'")
 
         return redirect("viewTournament", tournament_id=tournament.id)
+
+
 def generate_league_fixtures(tournament):
-    import itertools
     teams = list(tournament.teams.all())
 
     # Clear previous matches if any
@@ -353,8 +354,6 @@ def generate_league_fixtures(tournament):
     return len(fixtures)
 
 
-
-
 def tournament_view(request, tournament_id):
     user = None
     user_id = request.session.get("user_id")
@@ -367,12 +366,12 @@ def tournament_view(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
     matches = Match.objects.filter(tournament=tournament).select_related('team1', 'team2').order_by('created_at')
 
-    # ✅ assign permanent display number before filtering
+    # assign permanent display number before filtering
     all_matches = list(matches)
     for idx, match in enumerate(all_matches, start=1):
         match.display_number = idx  # virtual field (not in DB)
 
-    # ✅ search logic
+    # search logic
     query = request.GET.get('q', '').strip()
     if query:
         filtered_matches = [
@@ -396,13 +395,35 @@ def tournament_view(request, tournament_id):
 
 
 
+def update_match_date(request):
+    if request.method == "POST":
+        match_id = request.POST.get("match_id")
+        match_date = request.POST.get("match_date")
+
+        if not match_date:
+            messages.error(request, "Please select a valid date and time.")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        match = get_object_or_404(Match, id=match_id)
+
+        try:
+            # Convert string to datetime (naive)
+            naive_datetime = datetime.strptime(match_date, "%Y-%m-%dT%H:%M")
+
+            # Make it timezone-aware
+            aware_datetime = timezone.make_aware(naive_datetime)
+
+            match.match_date = aware_datetime
+            match.save()
 
 
+        except ValueError:
+            messages.error(request, "Invalid date format. Please try again.")
 
-# views.py
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
-from .models import Match
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    return redirect('/')
+
 
 def update_match_score(request):
     if request.method == "POST":
@@ -427,15 +448,13 @@ def update_match_score(request):
         match.played = True
         match.save()
 
-
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
     # If someone tries GET request
     return redirect('/')
 
 
-from django.shortcuts import render, get_object_or_404
-from .models import Tournament, Match, Team
+
 
 def leaderboard(request, tournament_id):
     tournament = get_object_or_404(Tournament, id=tournament_id)
@@ -515,36 +534,8 @@ def leaderboard(request, tournament_id):
     })
 
 
-from django.utils import timezone
-from datetime import datetime
-def update_match_date(request):
-    if request.method == "POST":
-        match_id = request.POST.get("match_id")
-        match_date = request.POST.get("match_date")
-
-        if not match_date:
-            messages.error(request, "Please select a valid date and time.")
-            return redirect(request.META.get('HTTP_REFERER', '/'))
-
-        match = get_object_or_404(Match, id=match_id)
-
-        try:
-            # Convert string to datetime (naive)
-            naive_datetime = datetime.strptime(match_date, "%Y-%m-%dT%H:%M")
-
-            # Make it timezone-aware
-            aware_datetime = timezone.make_aware(naive_datetime)
-
-            match.match_date = aware_datetime
-            match.save()
 
 
-        except ValueError:
-            messages.error(request, "Invalid date format. Please try again.")
-
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-
-    return redirect('/')
 
 
 def view_tournament_by_code(request):
@@ -567,6 +558,8 @@ def delete_tournament(request, tournament_id):
     tournament.delete()
     request.session['tournament_deleted'] = True
     return redirect("dashboard")
+
+
 
 def remove_participant(request, tournament_id):
     user_id = request.session.get("user_id")
