@@ -45,7 +45,7 @@
                 <div class="bg-[#000000] text-white rounded-3xl lg:px-3 py-2 px-2 border-[#13898B] border-2 text-center">
                     👋 Welcome, {{name}}
                 </div>
-                <a href="{% url 'logout' %}" class="btn relative inline-flex items-center justify-center w-12 h-12 text-white bg-black rounded-full">
+                <a href="{% url 'logout' %}" id="logout" class="btn relative inline-flex items-center justify-center w-12 h-12 text-white bg-black rounded-full">
                     <span class="absolute inset-0 rounded-full p-[2px] bg-gradient-to-r from-[#13898B] via-[#14D5D4] via-[#0C6083] to-[#118285]"></span>
                     <span class="relative z-10 flex items-center justify-center w-full h-full rounded-full"><i class="bi bi-box-arrow-right text-lg"></i></span>
                 </a>
@@ -152,30 +152,36 @@
             </div>
             <!-- Feature Cards -->
             <div class="h-auto rounded-3xl border-2 border-white/30 bg-white/5 backdrop-blur-md shadow-xl grid lg:grid-cols-3 gap-4 mt-10 p-6 mx-5 lg:mx-0">
-                <!-- Card 1 -->
-                <div class="flex flex-col justify-center items-center gap-5 px-2 py-6 border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white">
-                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
+                <div class="border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white class flex flex-col justify-center items-center gap-5 px-2 py-6">
+
+                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl rounded-lg flex items-center justify-center mb-2">
                         <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
                     </div>
                     <p class="text-white text-2xl mb-2">Simplify Management</p>
-                    <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
+                    <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without manual work.</p>
+
                 </div>
-                <!-- Card 2 -->
-                <div class="flex flex-col justify-center items-center gap-5 px-2 py-6 border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white">
-                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
-                        <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
+
+                <div class="border-b-1 lg:border-b-0 border-b-white lg:border-r-1 border-r-white class flex flex-col justify-center items-center gap-5 px-2 py-6">
+
+                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl rounded-lg flex items-center justify-center mb-2">
+                        <img src="{% static 'images/1.png' %}" alt="" class="h-22 w-22">
                     </div>
-                    <p class="text-white text-2xl mb-2">Simplify Management</p>
-                    <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
+                    <p class="text-white text-center text-2xl mb-2">Automatic Fixtures & Tracking</p>
+                    <p class="text-white text-[18px] text-center font-poppins">Generate match schedules instantly and track progress with ease.</p>
+
                 </div>
-                <!-- Card 3 -->
+
                 <div class="flex flex-col justify-center items-center gap-5 px-2 py-6">
-                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl flex items-center justify-center mb-2">
-                        <p class="text-white text-6xl"><i class="bi bi-rocket-takeoff"></i></p>
+
+                    <div class="h-24 w-24 bg-white/6 backdrop-blur-md shadow-xl rounded-lg flex items-center justify-center mb-2">
+                        <img src="{% static 'images/2.png' %}" alt="" class="h-22 w-22">
                     </div>
-                    <p class="text-white text-2xl mb-2">Simplify Management</p>
-                    <p class="text-white text-[18px] text-center font-poppins">Easily create, organize, and manage tournaments without the hassle of manual work.</p>
+                    <p class="text-white text-2xl mb-2">Smooth Experience</p>
+                    <p class="text-white text-[18px] text-center font-poppins">Provide organizers and participants a clear, engaging and user-friendly journey.</p>
+
                 </div>
+
             </div>
         </section>
     </main>

@@ -221,7 +221,7 @@ def dashboard(request):
     show_created_modal = request.session.pop('tournament_created', False)
     show_remove_modal = request.session.pop('participant_removed', False)
     show_join_modal = request.session.pop('tournament_joined', False)
-    request.session['tournament_joined'] = True
+
 
     return render(request, "demo.html", {
         "name": name,
